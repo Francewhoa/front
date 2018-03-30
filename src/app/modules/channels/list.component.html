@@ -1,0 +1,45 @@
+<div class="m-toolbar">
+  <div class="m-topbar--row">
+    <div class="m-topbar--navigation m-topbar--navigation--text-only">
+      <a class="m-topbar--navigation--item"
+        routerLink="/channels/top"
+        routerLinkActive="m-topbar--navigation--item-active"
+        >
+        <span>
+          Top
+        </span>
+        <m-tooltip icon="help" i18n="@@M__COMMON_TOPBAR_TOP_TOOLTIP">
+          Top displays the top content on Minds
+        </m-tooltip>
+      </a>
+      <a class="m-topbar--navigation--item"
+        routerLink="/channels/subscriptions"
+        routerLinkActive="m-topbar--navigation--item-active"
+        >
+        <span>Subscriptions</span>
+        <m-tooltip icon="help" i18n="@@MINDS__CHANNELS__TOPBAR__SUBSCRIPTIONS_TOOLTIP">
+          Channels you are subscribed to
+        </m-tooltip>
+      </a>
+      <a class="m-topbar--navigation--item"
+        routerLink="/channels/subscribers"
+        routerLinkActive="m-topbar--navigation--item-active"
+        >
+        <span>Subscribers</span>
+        <m-tooltip icon="help" i18n="@@MINDS__CHANNELS__TOPBAR__SUBSCRIBERS_TOOLTIP">
+          Channels who are subscribed to you
+        </m-tooltip>
+      </a>
+    </div>
+  </div>
+</div>
+
+<div class="m-channels--list">
+  <m-channels--tile *ngFor="let entity of entities" [entity]="entity"></m-channels--tile>
+  <infinite-scroll
+    distance="25%"
+    (load)="load()"
+    [moreData]="moreData"
+    [inProgress]="inProgress">
+  </infinite-scroll>
+</div>

@@ -1,0 +1,25 @@
+.minds-comment {
+  &.m-comment--error {
+    opacity: 0.65;
+  }
+
+  .m-comment--error-label {
+    color: #c00;
+
+    i.material-icons {
+      font-size: 1.2em;
+    }
+
+    > * {
+      vertical-align: middle;
+    }
+  }
+
+  .m-comment--username-wrapper {
+    min-width: 150px;
+    overflow-x: hidden;
+    width: calc(100% - 100px);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}

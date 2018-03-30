@@ -1,0 +1,33 @@
+
+.m-h1-input{
+  font-size: 56px;
+  border: 0;
+  background: none;
+  height: 72px;
+  font-weight: 400;
+}
+
+.m-input{
+  background: none;
+  font-weight: 400;
+  padding: 12px;
+  font-size: 14px;
+  border: 1px solid #EEE;
+  width: 100%;
+}
+
+
+.m-form-select, select.m-form-select{
+  width: auto;
+  flex: 1;
+  padding: 8px;
+  border-radius: 0;
+  background-color: transparent;
+  border: 0;
+  cursor: pointer;
+}
+
+// No step spinners on ffox
+input[type="number"] {
+  appearance: textfield;
+}

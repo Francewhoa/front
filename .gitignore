@@ -4,8 +4,10 @@
 app/stylesheets/plugins.scss
 app/stylesheets/plugins
 public
+dist
 /tests/ng-spec
 coverage
+src/main.css
 
 tsd_typings
 
@@ -19,6 +21,7 @@ tsd_typings
 .*
 *~
 !/.gitignore
+!/.angular-cli.json
 /nbproject
 /nb-configuration.xml
 Session.vim
@@ -30,3 +33,4 @@ Desktop.ini
 node_modules
 # don't ignore travis config
 !/.travis.yml
+!/.drone.yml

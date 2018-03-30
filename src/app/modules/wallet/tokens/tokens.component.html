@@ -1,0 +1,44 @@
+<div class="m-page">
+  <div class="m-page--sidebar">
+    <m-wallet--balance-tokens></m-wallet--balance-tokens>
+
+    <div class="m-page--sidebar--navigation">
+      <a class="m-page--sidebar--navigation--item"
+        routerLink="/wallet/tokens/transactions"
+        routerLinkActive="m-page--sidebar--navigation--item-active"
+      >
+        <i class="material-icons">history</i>
+        <span>Transactions</span>
+      </a>
+
+      <a class="m-page--sidebar--navigation--item"
+        routerLink="/wallet/tokens/withdraw"
+        routerLinkActive="m-page--sidebar--navigation--item-active"
+      >
+        <i class="material-icons">local_atm</i>
+        <span>Withdraw</span>
+      </a>
+
+      <a class="m-page--sidebar--navigation--item"
+        routerLink="/wallet/tokens/contributions"
+        routerLinkActive="m-page--sidebar--navigation--item-active"
+      >
+        <i class="material-icons">stars</i>
+        <span>Contributions</span>
+      </a>
+
+      <a class="m-page--sidebar--navigation--item"
+        routerLink="/wallet/tokens/addresses"
+        routerLinkActive="m-page--sidebar--navigation--item-active"
+      >
+        <i class="material-icons">settings</i>
+        <span>Addresses</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="m-page--main">
+    <m-token--onboarding *ngIf="showOnboarding"></m-token--onboarding>
+    <router-outlet></router-outlet>
+  </div>
+</div>

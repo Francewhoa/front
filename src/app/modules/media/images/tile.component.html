@@ -1,0 +1,10 @@
+<div class="m-media--images--tile">
+
+  <a
+    [ngStyle]="{'background': '#444 url(' + entity.thumbnail_src + ') center center / cover'}"
+    [routerLink]="['/media', entity.guid]"
+    >
+  </a>
+  <m-safe-toggle *ngIf="session.isAdmin()" [(entity)]="entity"></m-safe-toggle>
+
+</div>

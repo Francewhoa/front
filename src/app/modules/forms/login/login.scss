@@ -1,0 +1,37 @@
+@import "defaults";
+
+.m-login-box{
+  margin-top:$minds-margin*2;
+  width:100% !important;
+
+  h3{
+    margin:0;
+    font-size:24px;
+    line-height:26px;
+  }
+
+  .mdl-grid{
+    padding:0;
+    width:100%;
+  }
+
+  input{
+    padding:$minds-padding*2;
+    font-size:16px;
+    width:100%;
+    -webkit-appearance:none;
+    border: 1px solid #ececec;
+    border-radius: 3px;
+    font-family: Roboto;
+    font-weight: 800;
+
+    &::placeholder {
+      font-weight: 800;
+    }
+  }
+
+  .m-reset-password-link{
+    padding-left:$minds-padding*2;
+    text-decoration:none;
+  }
+}

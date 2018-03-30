@@ -1,0 +1,106 @@
+<div class="m-toolbar">
+  <div class="m-topbar--row">
+    <div class="m-topbar--navigation m-topbar--navigation--text-only">
+      <a class="m-topbar--navigation--item"
+        routerLink="/newsfeed/top"
+        routerLinkActive="m-topbar--navigation--item-active"
+      >
+        <span i18n="@@M__FEATURE__SIDEBAR_PLURAL">Top</span>
+        <m-tooltip icon="help" i18n="@@M__COMMON_TOPBAR_TOP_TOOLTIP">
+          Top displays the top content on Minds
+        </m-tooltip>
+      </a>
+      <a class="m-topbar--navigation--item"
+        routerLink="/newsfeed/subscribed"
+        routerLinkActive="m-topbar--navigation--item-active"
+        *ngIf="session.isLoggedIn()"
+      >
+        <span i18n="@@M__FEATURE__NEWSFEED_PLURAL">Subscribed</span>
+        <m-tooltip icon="help" i18n="@@MINDS__NEWSFEED__TOPBAR__SUBSCRIBED_TOOLTIP">
+          Your Newsfeed contains posts from channels that you are subscribed to, as well as boosted posts from the wider network
+        </m-tooltip>
+      </a>
+      <a class="m-topbar--navigation--item"
+        routerLink="/newsfeed/boost"
+        routerLinkActive="m-topbar--navigation--item-active"
+      >
+        <span i18n="@@M__FEATURE__CHANNEL__PLURAL">BoostFeed</span>
+        <m-tooltip icon="help" i18n="@@MINDS__NEWSFEED__TOPBAR__BOOSTFEED_TOOLTIP">
+          The Boostfeed only shows boosted posts from the wider network. To Boost your content, click the Boost icon on the topbar
+        </m-tooltip>
+      </a>
+
+      <div class="m-layout--spacer"></div>
+
+      <m-newsfeed--dropdown></m-newsfeed--dropdown>
+    </div>
+  </div>
+</div>
+
+<div class="mdl-grid m-newsfeed">
+
+    <div class="mdl-cell mdl-cell--4-col m-newsfeed--sidebar" >
+
+      <minds-card-user *ngIf="session.isLoggedIn()" [object]="session.getLoggedInUser()" class="mdl-card m-border" style="margin-bottom:16px;"></minds-card-user>
+
+      <a routerLink="/plus" class="mdl-card mdl-color--green mdl-color-text--white m-boost-console-link"  *ngIf="session.isLoggedIn() && !session.getLoggedInUser().plus && showPlusButton">
+        <div class="mdl-card__supporting-text mdl-color-text--white minds-newsfeed-sidebar-button m-layout--row">
+          <i class="material-icons">add_circle</i>
+          <ng-container i18n="@@MINDS__NEWSFEED__UPGRADE_TO_PLUS_ACTION">Upgrade to Plus</ng-container>
+          <div class="m-layout--spacer"></div>
+          <i class="material-icons m-newsfeed-sidebar-button--close" (click)="hidePlusButton($event)">close</i>
+        </div>
+      </a>
+
+      <a routerLink="/login" class="mdl-card mdl-color--green mdl-color-text--white m-boost-console-link" *ngIf="!session.isLoggedIn()">
+        <div class="mdl-card__supporting-text mdl-color-text--white minds-newsfeed-sidebar-button">
+          <!-- i18n: @@M__ACTION__LOGIN -->Login<!-- /i18n -->
+        </div>
+      </a>
+
+      <div class="minds-spacer minds-spacer-2x"></div>
+
+      <div class="mdl-card mdl-color--white m-border">
+        <m-tagcloud></m-tagcloud>
+      </div>
+
+      <div class="minds-spacer minds-spacer-2x"></div>
+
+      <div class="m-newsfeed--dynamic-siderbar" *ngIf="!showRightSidebar">
+        <m-ads-boost limit="8"></m-ads-boost>
+        <div class="minds-spacer minds-spacer-2x"></div>
+
+        <div class="m-newsfeed-footer">
+          <ul class="m-footer-nav m-footer-nav-inline">
+            <li *ngFor="let page of navigation.getItems('footer')" class="m-footer-nav-item">
+              <a *ngIf="page.path && page.path.indexOf('p/') > -1" [routerLink]="['/' + page.path]">{{page.title}}</a>
+              <a *ngIf="page.path.indexOf('p/') < 0" [href]="page.path" target="_blank">{{page.title}}</a>
+            </li>
+          </ul>
+          <span class="copyright mdl-color-text--blue-grey-700" i18n="@@MINDS__NEWSFEED__COPYRIGHT_FOOTER">&#169; Minds 2016</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="mdl-cell mdl-cell--8-col m-newsfeed--feed"  [ngClass]="{ 'm-newsfeed--logged-out' : !session.getLoggedInUser()}">
+
+      <router-outlet></router-outlet>
+
+    </div>
+
+    <div class="mdl-cell mdl-cell--4-col m-newsfeed--boost-sidebar" *ngIf="showRightSidebar">
+      <m-ads-boost limit="8" *ngIf="!(session.getLoggedInUser().plus && session.getLoggedInUser().disabled_boost)"></m-ads-boost>
+      <div class="minds-spacer minds-spacer-2x"></div>
+
+      <div class="m-newsfeed-footer">
+        <ul class="m-footer-nav m-footer-nav-inline">
+          <li *ngFor="let page of navigation.getItems('footer')" class="m-footer-nav-item">
+            <a *ngIf="page.path && page.path.indexOf('p/') > -1" [routerLink]="['/' + page.path]">{{page.title}}</a>
+            <a *ngIf="page.path.indexOf('p/') < 0" [href]="page.path" target="_blank">{{page.title}}</a>
+          </li>
+        </ul>
+        <span class="copyright mdl-color-text--blue-grey-700" i18n="@@MINDS__NEWSFEED__COPYRIGHT_FOOTER">&#169; Minds 2018</span>
+      </div>
+    </div>
+
+</div>

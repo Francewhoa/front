@@ -1,0 +1,64 @@
+<div class="m-toolbar">
+  <div class="m-topbar--row">
+    <div class="m-topbar--navigation m-topbar--navigation--text-only">
+      <a class="m-topbar--navigation--item"
+        routerLink="/media/images/top"
+        routerLinkActive="m-topbar--navigation--item-active"
+        >
+          <span>Top</span>
+          <m-tooltip icon="help" i18n="@@M__COMMON_TOPBAR_TOP_TOOLTIP">
+            Top displays the top content on Minds
+          </m-tooltip>
+      </a>
+      <a class="m-topbar--navigation--item"
+        routerLink="/media/images/network"
+        routerLinkActive="m-topbar--navigation--item-active"
+      >
+        <span>Subscriptions</span>
+        <m-tooltip icon="help" i18n="@@@@MINDS__IMAGES__TOPBAR__SUBSCRIPTIONS_TOOLTIP">
+          Images from channels you are subscribed to
+        </m-tooltip>
+      </a>
+      <a class="m-topbar--navigation--item"
+        routerLink="/media/images/my"
+        routerLinkActive="m-topbar--navigation--item-active"
+        *ngIf="session.isLoggedIn()"
+        >
+          <span>My Images</span>
+          <m-tooltip icon="help" i18n="@@MINDS__IMAGES__TOPBAR__YOUR_IMAGES_TOOLTIP">
+            Your Images
+          </m-tooltip>
+      </a>
+      <a class="m-topbar--navigation--item"
+        (click)="showPoster()"
+        *ngIf="session.isLoggedIn()"
+        >
+          <span>Upload</span>
+          <m-tooltip icon="help" i18n="@@MINDS__IMAGES__TOPBAR__UPLOAD_TOOLTIP">
+            Upload a new Image
+          </m-tooltip>
+      </a>
+
+      <div class="m-layout--spacer"></div>
+
+      <m-topbar--navigation--options
+        (change)="onOptionsChange($event)" 
+        [options]="filter == 'trending' ? [ 'rating' ] : []"
+        *ngIf="filter === 'trending'"
+        >
+      </m-topbar--navigation--options>
+
+    </div>
+  </div>
+</div>
+
+<div class="m-media--images--list">
+  <m-media--images--tile *ngFor="let entity of entities" [entity]="entity">
+  </m-media--images--tile>
+  <infinite-scroll
+    distance="25%"
+    (load)="load()"
+    [moreData]="moreData"
+    [inProgress]="inProgress">
+  </infinite-scroll>
+</div>

@@ -1,0 +1,18 @@
+@import 'defaults.scss';
+
+m-messenger {
+  @media screen and (max-width: $max-mobile) {
+    display: none;
+  }
+  position:fixed;
+  bottom:0;
+  right:0;
+  z-index:1000;
+
+  .m-messenger--conversations-wrappers{
+    position: absolute;
+    right: 0;
+    bottom: 0;
+  }
+
+}

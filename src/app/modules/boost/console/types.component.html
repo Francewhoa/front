@@ -1,0 +1,28 @@
+
+<div class="m-page">
+  <div class="m-page--sidebar">
+    <div class="m-page--sidebar--navigation">
+      <a class="m-page--sidebar--navigation--item"
+        [routerLink]="'/boost/console/' + type + '/history' + (type === 'offers' ? '/inbox' : '')"
+        routerLinkActive="m-page--sidebar--navigation--item-active"
+        >
+        <i class="material-icons">history</i>
+        <span>History</span>
+      </a>
+
+      <a class="m-page--sidebar--navigation--item"
+        [routerLink]="'/boost/console/' + type + '/create'"
+        routerLinkActive="m-page--sidebar--navigation--item-active"
+        >
+          <i class="material-icons">add_circle</i>
+          <span>Create a Boost</span>
+      </a>
+    </div>
+  </div>
+
+  <div class="m-page--main">
+
+    <router-outlet></router-outlet>
+
+  </div>
+</div>

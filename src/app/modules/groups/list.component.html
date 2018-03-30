@@ -1,0 +1,48 @@
+<div class="m-toolbar">
+  <div class="m-topbar--row">
+    <div class="m-topbar--navigation m-topbar--navigation--text-only">
+      <a class="m-topbar--navigation--item"
+        routerLink="/groups/top"
+        routerLinkActive="m-topbar--navigation--item-active"
+        >
+          <span>Top</span>
+          <m-tooltip icon="help" i18n="@@M__COMMON_TOPBAR_TOP_TOOLTIP">
+            Top displays the top content on Minds
+          </m-tooltip>
+      </a>
+      <a class="m-topbar--navigation--item"
+        routerLink="/groups/member"
+        routerLinkActive="m-topbar--navigation--item-active"
+        *ngIf="session.isLoggedIn()"
+        >
+          <span>My Groups</span>
+          <m-tooltip icon="help" i18n="@@MINDS__GROUPS__TOPBAR__YOUR_GROUPS_TOOLTIP">
+            Your Groups
+          </m-tooltip>
+      </a>
+      <a class="m-topbar--navigation--item"
+        routerLink="/groups/create"
+        routerLinkActive="m-topbar--navigation--item-active"
+        *ngIf="session.isLoggedIn()"
+        >
+          <span>Start a new group</span>
+          <m-tooltip icon="help" i18n="@@MINDS__GROUPS__TOPBAR__START_A_NEW_GROUP_TOOLTIP">
+            Start a new group
+          </m-tooltip>
+      </a>
+    </div>
+  </div>
+</div>
+
+<div class="m-groups--list">
+
+  <m-groups--tile *ngFor="let entity of entities" [entity]="entity"></m-groups--tile>
+
+  <infinite-scroll
+      distance="25%"
+      (load)="load()"
+      [moreData]="moreData"
+      [inProgress]="inProgress">
+  </infinite-scroll>
+
+</div>

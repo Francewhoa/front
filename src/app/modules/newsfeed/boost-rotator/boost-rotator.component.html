@@ -1,0 +1,25 @@
+<div class="m-boost-rotator-tools">
+  <div class="m-layout--spacer"></div>
+  <ul class="m-boost-rotator-tabs" *ngIf="boosts.length > 0 && !disabled">
+    <li (click)="prev()">
+      <i class="material-icons mdl-color-text--blue-grey-400">chevron_left</i>
+    </li>
+    <li (click)="next()">
+      <i class="material-icons mdl-color-text--blue-grey-400">chevron_right</i>
+    </li>
+  </ul>
+
+</div>
+
+<ng-container *ngIf="!disabled">
+  <minds-activity
+    *ngFor="let boost of boosts; let i = index"
+    [object]="boost"
+    [boostToggle]="boost.boostToggle"
+    [class]="'mdl-card m-border item m-boost-rotator-item m-boost-rotator-item-' + i"
+    visible="true"
+    [hidden]="i != currentPosition"
+    [showBoostMenuOptions]="true"
+    #activities
+  ></minds-activity>
+</ng-container>

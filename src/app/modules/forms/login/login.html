@@ -1,0 +1,107 @@
+
+<div class="mdl-card mdl-color--red-500 mdl-color-text--blue-grey-50 m-error-box mdl-shadow--2dp minds-login-box m-error-box" style="min-height:0;" [hidden]="!errorMessage">
+  <div class="mdl-card__supporting-text mdl-color-text--blue-grey-50">
+    <ng-container
+      *ngIf="errorMessage == 'LoginException::AttemptsExceeded'"
+      i18n="@@MINDS__LOGIN__EXCEPTION__ATTEMPTS_EXCEEDED"
+    >
+      Login attempts exceeded
+    </ng-container>
+    <ng-container
+      *ngIf="errorMessage == 'LoginException::DisabledUser'"
+      i18n="@@MINDS__LOGIN__EXCEPTION__DISABLED_USER">
+      This account has been disabled
+    </ng-container>
+    <ng-container
+      *ngIf="errorMessage == 'LoginException::UsernameFailure'"
+      i18n="@@MINDS__LOGIN__EXCEPTION__USERNAME_FAILURE">
+      Incorrect username
+    </ng-container>
+    <ng-container
+      *ngIf="errorMessage == 'LoginException::AccountLocked'"
+      i18n="@@MINDS__LOGIN__EXCEPTION__ACCOUNT_LOCKED">
+      Account locked
+    </ng-container>
+    <ng-container
+      *ngIf="errorMessage == 'LoginException::PasswordFailure'"
+      i18n="@@MINDS__LOGIN__EXCEPTION__PASSWORD_FAILURE">
+      Incorrect password
+    </ng-container>
+    <ng-container
+      *ngIf="errorMessage == 'LoginException::BannedUser'"
+      i18n="@@MINDS__LOGIN__EXCEPTION__BANNED_USER">
+      This account has been banned
+    </ng-container>
+    <ng-container
+      *ngIf="errorMessage == 'LoginException::Unknown'"
+      i18n="@@MINDS__LOGIN__EXCEPTION__UNKNOWN_ERROR">
+      Unknown error
+    </ng-container>
+  </div>
+</div>
+
+<!-- START: LOGIN -->
+<form (submit)="$event.preventDefault()" [formGroup]="form" class="mdl-card mdl-color-text--blue-grey-400 m-form m-login-box" [hidden]="hideLogin">
+
+  <div class="mdl-card__supporting-text mdl-grid">
+
+    <div class="mdl-cell mdl-cell--12-col">
+      <input
+        type="text"
+        id="username"
+        formControlName="username"
+        placeholder="Username"
+        i18n-placeholder="@@M__COMMON__USERNAME"
+        (keydown.enter)="login(); $event.preventDefault();"
+        />
+    </div>
+
+    <div class="mdl-cell mdl-cell--12-col">
+      <input
+        type="password"
+        id="password"
+        formControlName="password"
+        placeholder="Password"
+        i18n-placeholder="@@M__COMMON__PASSWORD"
+        (keydown.enter)="login(); $event.preventDefault();"
+        />
+    </div>
+  </div>
+
+  <div class="mdl-card__actions">
+    <button class="m-btn m-btn--action m-btn--login" (click)="login()" [disabled]="inProgress">
+      <ng-container i18n="@@M__ACTION__LOGIN">Login</ng-container>
+    </button>
+    <a class="mdl-card__subtitle-text mdl-color-text--blue-grey-300 m-reset-password-link" [routerLink]="['/forgot-password']">
+      <ng-container i18n="@@FORMS__LOGIN__FORGOT_PASSWORD_LINK">Forgot Password?</ng-container>
+    </a>
+  </div>
+
+</form>
+<!-- END: LOGIN -->
+
+<!-- START: TWOFACTOR -->
+<div class="mdl-card mdl-shadow--2dp minds-login-box" [hidden]="!twofactorToken">
+  <div class="mdl-card__title">
+    <h2 class="mdl-card__title-text" i18n="@@FORMS__LOGIN__2FA_LOGIN_TITLE">Twofactor Login</h2>
+  </div>
+
+  <div class="mdl-card__supporting-text">
+    <ng-container i18n="@@FORMS__LOGIN__2FA_LOGIN_SMS_SENT">We just sent you a text. Enter the code below to authenticate.</ng-container>
+  </div>
+
+  <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label" [mdl]>
+    <input class="mdl-textfield__input"
+    type="text"
+    id="code"
+    #code
+    (keydown.enter)="twofactorAuth(code)"
+    />
+    <label class="mdl-textfield__label" for="code" i18n="@@M__COMMON__ENTER_2FA_CODE">Enter your code here</label>
+  </div>
+  <div></div>
+
+  <button class="m-btn m-btn--action" (click)="twofactorAuth(code)">
+    <ng-container i18n="@@M__ACTION__LOGIN">Login</ng-container>
+  </button>
+</div>

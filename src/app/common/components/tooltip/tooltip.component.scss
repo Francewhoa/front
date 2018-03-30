@@ -1,0 +1,38 @@
+m-tooltip {
+  display: inline-block;
+  cursor: pointer;
+
+  .m-tooltip--anchored {
+    position: relative;
+  }
+}
+
+.m-tooltip--bubble {
+  position: absolute;
+  font-size: 13px;
+  background: rgba(0, 0, 0, 0.9);
+  color: #fff;
+  padding: 12px;
+  border-radius: 3px;
+  z-index: 999;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 300;
+  letter-spacing: 1.4px;
+  max-width: 220px;
+  line-height: 18px;
+  white-space: normal;
+  text-align: left;
+  text-transform: none;
+
+  &.m-tooltip--bubble--anchor-left {
+    left: 0;
+    right: auto;
+    width: 220px;
+  }
+
+  &.m-tooltip--bubble--anchor-right {
+    left: auto;
+    right: 0;
+    width: 220px;
+  }
+}

@@ -1,0 +1,65 @@
+
+.m-token--onboarding--onchain-selections {
+  overflow: visible;
+  margin-top: 32px;
+  
+  li {
+    min-width: 350px;
+
+    &:nth-of-type(1) {
+      min-width: 230px;
+    }
+
+    img.metamask {
+      width: 86px;
+      margin-bottom: 8px;
+    }
+
+    i {
+      font-size: 88px !important;
+    }
+
+    .m-token--onboarding--onchain-selections--buttons {
+      display: flex;
+      align-items: center;
+      padding-top: 16px;
+
+      span {
+        font-size: 11px;
+        color: #444;
+        padding: 0 8px;
+      }
+
+      .m-token--onboarding--onchain-selections--buttons-input {
+        appearance: none;
+        flex-grow: 1;
+        margin-right: 16px;
+        padding: 6px 8px;
+        border: 1px solid #eee;
+        border-radius: 4px;
+        font-family: 'Roboto', sans-serif;
+        font-size: 15px;
+        letter-spacing: 1px;
+        font-weight: 300;
+      }
+
+      span.m-token--onboarding--onchain-selections--buttons-input {
+        display: inline-block;
+        white-space: nowrap;
+      }
+
+
+      .mdl-spinner {
+        flex-shrink: 0;
+        flex-grow: 0;
+        margin-left: 16px;
+      }
+    }
+
+  }
+  
+}
+
+.m-token--onboarding-setup-options {
+  z-index: 10;
+}

@@ -1,0 +1,59 @@
+<div class="m-marketing">
+
+  <div class="m-marketing--header">
+    <div class="m-marketing--background-video">
+      <img [src]="minds.cdn_assets_url + 'assets/photos/fractal.jpg'">
+    </div>
+
+    <div class="m-marketing--header-inner">
+      <h1>Minds Plus</h1>
+      <h3>Upgrade your channel and unlock premium features</h3>
+
+      <div class="m-marketing--action-button">
+        <button class="mdl-button mdl-button--colored mdl-color--green" *ngIf="user && !isPlus()" (click)="openSubscription()" [hidden]="showSubscription">Upgrade - $5.00/month</button>
+        <button class="mdl-button mdl-button--colored mdl-color--green" *ngIf="!user" routerLink="/login">Upgrade - $5.00/month</button>
+        <button class="mdl-button mdl-button--colored mdl-color--green" *ngIf="isPlus()" (click)="cancelSubscription()">Cancel Plus</button>
+      </div>
+    </div>
+
+    <div class="m-marketing--overlay"></div>
+  </div>
+
+  <m-plus--subscription #subscription [hidden]="!showSubscription"></m-plus--subscription>
+
+  <div class="m-marketing--contents m-layout--row">
+    <div class="mdl-cell mdl-cell--4-col mdl-cell--4-col-tablet mdl-cell--6-col-phone">
+      <i class="material-icons mdl-color-text--blue-grey-700">trending_up</i>
+      <h2>Hide Boosts</h2>
+      <span>Hide all boosted content from your newsfeed and sidebars (optional)</span>
+    </div>
+    <div class="mdl-cell mdl-cell--4-col mdl-cell--4-col-tablet mdl-cell--6-col-phone">
+      <i class="material-icons mdl-color-text--blue-grey-700">favorite</i>
+      <h2>Exclusive</h2>
+      <span>Access exclusive Minds content</span>
+    </div>
+    <div class="mdl-cell mdl-cell--4-col mdl-cell--4-col-tablet mdl-cell--6-col-phone">
+      <i class="material-icons mdl-color-text--blue-grey-700">verified_user</i>
+      <h2>Verified</h2>
+      <span *ngIf="!user || !user.plus">Request to verify your channel</span>
+      <span *ngIf="user && user.plus && !user.verified">
+        <a (click)="showVerify = true; detectChanges()" style="cursor:pointer">Click here</a> to request to be verified
+      </span>
+      <span *ngIf="user && user.plus && user.verified">You are verified!</span>
+    </div>
+    <div class="mdl-cell mdl-cell--4-col mdl-cell--4-col-tablet mdl-cell--6-col-phone">
+      <i class="material-icons mdl-color-text--blue-grey-700">add_circle_outline</i>
+      <h2>Badge</h2>
+      <span>Make your channel stand out with a Minds Plus badge</span>
+    </div>
+  </div>
+
+  <div class="m-marketing--faq">
+    <m-faq category="plus"></m-faq>
+  </div>
+
+  <m-plus--verify *ngIf="showVerify" (closed)="showVerify=false; detectChanges()"></m-plus--verify>
+
+</div>
+
+<m-footer></m-footer>
