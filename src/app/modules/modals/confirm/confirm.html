@@ -1,0 +1,49 @@
+<m-modal
+  [open]="open"
+  (closed)="close($event)"
+  class="mdl-color-text--blue-grey-700"
+>
+  <div [hidden]="errorlevel !== null" class="m-modal-confirm-body">
+    <ng-content select="[confirm-message]"></ng-content>
+
+    <div class="m-modal-confirm-buttons">
+      <m-button color="blue" [saving]="inProgress" (onAction)="action($event)">
+        {{ yesButton }}
+      </m-button>
+
+      <m-button
+        [saving]="inProgress"
+        (onAction)="close($event)"
+        *ngIf="noButton"
+      >
+        {{ noButton }}
+      </m-button>
+    </div>
+  </div>
+
+  <div
+    [hidden]="errorlevel === null || errorlevel !== 0"
+    class="m-modal-confirm-body"
+  >
+    <ng-content select="[confirm-success-message]"></ng-content>
+
+    <div class="m-modal-confirm-buttons" *ngIf="dismissButton">
+      <m-button (onAction)="close($event)">
+        {{ dismissButton }}
+      </m-button>
+    </div>
+  </div>
+
+  <div
+    [hidden]="errorlevel === null || errorlevel === 0"
+    class="m-modal-confirm-body"
+  >
+    <ng-content select="[confirm-error-message]"></ng-content>
+
+    <div class="m-modal-confirm-buttons" *ngIf="dismissButton">
+      <m-button (onAction)="close($event)">
+        {{ dismissButton }}
+      </m-button>
+    </div>
+  </div>
+</m-modal>

@@ -1,0 +1,69 @@
+<div class="m-wireCreator__shop m-formWrapper">
+  <div class="m-wireCreatorShop__heading">
+    <div class="m-wireCreatorShopHeading__title" i18n="noun|@@COMMON__SHOP">
+      Shop
+    </div>
+
+    <div
+      class="m-wireCreatorShopHeading__description"
+      *ngIf="service.owner$ | async as owner"
+    >
+      <ng-container i18n="@@CREATOR_SHOP__HAS_SUPPORT_TIERS_OFFERS"
+        >@{{ owner?.username }} has membership exclusive offers</ng-container
+      >
+      &middot;
+      <a (click)="dismiss()" [routerLink]="['/', owner.username, 'shop']"
+        >Explore Shop</a
+      >
+    </div>
+  </div>
+
+  <div
+    *ngIf="shop.supportTiers.groupedList$ | async as groupedSupportTiers"
+    class="m-wireCreatorShop__select m-form__field--select"
+    [class.m-wireCreatorShopSelect__placeholder]="!(shop.selected$ | async)"
+  >
+    <div class="m-form__row--input">
+      <select
+        [compareWith]="byUrn"
+        [ngModel]="shop.selected$ | async"
+        (ngModelChange)="shop.select($event)"
+      >
+        <option value="null" disabled i18n="@@CREATOR_SHOP__SELECT_SUPPORT_TIER"
+          >Select Membership</option
+        >
+
+        <optgroup label="USD" i18n-label="@@CREATOR_SHOP__USD">
+          <option
+            *ngFor="let supportTier of groupedSupportTiers.usd"
+            [ngValue]="supportTier"
+          >
+            ${{ supportTier.usd | number }}
+            -
+            {{ supportTier.name }}
+            <ng-container *ngIf="supportTier.description">
+              - {{ supportTier.description }}
+            </ng-container>
+          </option>
+        </optgroup>
+
+        <optgroup label="Tokens" i18n-label="@@CREATOR_SHOP__TOKENS">
+          <option
+            *ngFor="let supportTier of groupedSupportTiers.tokens"
+            [ngValue]="supportTier"
+          >
+            <ng-container i18n="@@CREATOR_SHOP__OTHER"
+              >{supportTier.tokens, plural, =1
+              {{{supportTier.tokens | number}} token} other
+              {{{supportTier.tokens | number}} tokens}}</ng-container
+            >
+            - {{ supportTier.name }}
+            <ng-container *ngIf="supportTier.description">
+              - {{ supportTier.description }}
+            </ng-container>
+          </option>
+        </optgroup>
+      </select>
+    </div>
+  </div>
+</div>

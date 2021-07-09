@@ -1,0 +1,40 @@
+m--tree {
+  display: block;
+  font-size: 14px;
+  @include m-theme() {
+    color: themed($m-black);
+  }
+
+  .m-tree--items {
+    display: flex;
+    align-items: baseline;
+
+    .m-tree--items-icon {
+      width: 10px;
+      line-height: 10px;
+      height: 10px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 3px;
+      @include m-theme() {
+        border: 1px solid themed($m-black);
+      }
+
+      cursor: pointer;
+      user-select: none;
+      font-size: 16px;
+    }
+
+    .m-tree--items--label {
+      flex-grow: 1;
+      cursor: pointer;
+
+      &:hover {
+        @include m-theme() {
+          background-color: themed($m-blue);
+        }
+      }
+    }
+  }
+}

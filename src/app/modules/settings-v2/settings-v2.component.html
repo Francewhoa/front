@@ -1,0 +1,36 @@
+<div class="m-settingsV2 m-page m-pageLayout__container">
+  <m-nestedMenu
+    class="m-settingsV2__mainMenu m-pageLayout__pane--right"
+    [ngClass]="{ onMainNav: onMainNav }"
+    [disableActiveClass]="onMainNav"
+    [menus]="mainMenus"
+    parentRoute="/settings"
+    (itemSelected)="mainMenuItemSelected()"
+  ></m-nestedMenu>
+
+  <div
+    class="m-settingsV2__secondaryPane m-pageLayout__pane--main"
+    [ngClass]="{ onSecondaryNav: !onMainNav }"
+  >
+    <m-nestedMenu
+      *ngIf="secondaryPaneIsMenu"
+      class="m-settingsV2__secondaryMenuView"
+      isNested="true"
+      [menus]="secondaryMenus[menuHeaderId]"
+      (clickedBack)="secondaryMenuClickedBack()"
+    ></m-nestedMenu>
+
+    <ng-container *ngIf="!secondaryPaneIsMenu">
+      <div class="m-settingsV2__settingsView">
+        <div class="m-settingsV2__viewWrapper">
+          <div class="m-formWrapper" [hidden]="!init">
+            <router-outlet (activate)="onActivate($event)"></router-outlet>
+          </div>
+          <div class="m-formWrapper" [hidden]="init">
+            <m-loadingSpinner [inProgress]="!init"></m-loadingSpinner>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</div>

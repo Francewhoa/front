@@ -1,0 +1,21 @@
+m-safe-toggle {
+  .m-safe-toggle {
+    cursor: pointer;
+
+    label {
+      padding: 0 !important;
+    }
+
+    i.material-icons {
+      @include m-theme() {
+        color: themed($m-grey-300);
+      }
+
+      &.m-safe-toggle--active {
+        @include m-theme() {
+          color: themed($m-blue);
+        }
+      }
+    }
+  }
+}

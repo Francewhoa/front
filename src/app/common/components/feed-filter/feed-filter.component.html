@@ -1,0 +1,38 @@
+<div class="m-feedFilter">
+  <div *ngIf="options?.length" class="m-feedFilter__menu">
+    <m-dropdownMenu [menu]="filtersMenu">
+      <div class="m-feedFilterMenu__trigger">
+        <span>Type: </span
+        ><span class="m-feedFilterMenuTrigger__selectionLabel">{{
+          typeLabel
+        }}</span
+        ><span>▾</span>
+      </div>
+    </m-dropdownMenu>
+  </div>
+  <div class="m-feedFilter__content">
+    <ng-content></ng-content>
+  </div>
+</div>
+
+<ng-template #filtersMenu>
+  <ul>
+    <ng-container *ngIf="options.indexOf('type') > -1">
+      <li
+        *ngFor="let typeEntry of types; let first = first"
+        [class.m-dropdownMenu__item--first]="first"
+        (click)="typeChangeEmitter.emit(typeEntry.value)"
+      >
+        <span
+          class="m-dropdownMenu__item"
+          [ngClass]="{
+            'm-dropdownMenu__item--selected': type === typeEntry.value
+          }"
+        >
+          <m-icon *ngIf="type === typeEntry.value" iconId="check"></m-icon>
+          <span>{{ typeEntry.label }}</span>
+        </span>
+      </li>
+    </ng-container>
+  </ul>
+</ng-template>

@@ -1,0 +1,51 @@
+@import 'defaults';
+
+m-modal {
+  position: relative;
+  @include z-index(modal);
+  display: block;
+
+  .m-modal__wrapper {
+    // new stacking context
+    position: relative;
+    z-index: 0;
+  }
+
+  .m-modal-bg {
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    position: fixed;
+    cursor: pointer;
+    z-index: 1;
+
+    @include m-theme() {
+      background-color: themed($m-overlay);
+    }
+  }
+
+  .m-modal-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-width: 50%;
+    min-height: 50%;
+    z-index: 2;
+
+    @media screen and (max-width: $min-tablet) {
+      & {
+        width: 90%;
+      }
+    }
+
+    .mdl-card {
+      min-height: 200px;
+
+      i {
+        cursor: pointer;
+      }
+    }
+  }
+}

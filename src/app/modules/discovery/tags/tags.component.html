@@ -1,0 +1,77 @@
+<m-discovery__tabs></m-discovery__tabs>
+<m-loadingSpinner [inProgress]="inProgress$ | async"> </m-loadingSpinner>
+
+<section
+  class="m-discoveryTags__section"
+  *ngIf="(route.params | async)?.type === 'your'"
+>
+  <ul
+    class="m-discoveryTags__list m-discoveryTags__list--user"
+    data-cy="discovery-tags-section--user"
+  >
+    <li class="m-discoveryTrends__trend" *ngFor="let tag of tags$ | async">
+      <a
+        [routerLink]="parentPath + '/search'"
+        [queryParams]="{ q: '#' + tag.value, f: 'top' }"
+      >
+        <div>
+          <h4>#{{ tag.value }}</h4>
+        </div>
+        <i class="m-discoveryTrendListItem__chevron material-icons">
+          chevron_right
+        </i>
+      </a>
+    </li>
+    <li
+      class="m-discoveryTrends__trend m-discoverTrends__trend--feedLink"
+      *ngIf="(tags$ | async).length"
+    >
+      <a [routerLink]="parentPath + '/feeds/preferred'"
+        ><div>
+          <h4 i18n="@@DISCOVERY_TAGS__SEE_YOUR_FEED">See your feed</h4>
+        </div>
+        <i class="m-discoveryTrendListItem__chevron material-icons">
+          chevron_right
+        </i></a
+      >
+    </li>
+  </ul>
+</section>
+
+<section
+  class="m-discoveryTags__section"
+  *ngIf="(route.params | async)?.type === 'trending'"
+>
+  <ul class="m-discoveryTags__list m-discoveryTags__list--trending">
+    <li class="m-discoveryTrends__trend" *ngFor="let tag of trending$ | async">
+      <a
+        [routerLink]="parentPath + '/search'"
+        [queryParams]="{ q: '#' + tag.value, f: 'top' }"
+      >
+        <div>
+          <h4>#{{ tag.value }}</h4>
+          <div class="m-discoveryTrendListItem__supportingText--below">
+            <span>{{ tag.posts_count }} posts</span>
+            <span>{{ tag.votes_count }} votes</span>
+          </div>
+        </div>
+        <i class="m-discoveryTrendListItem__chevron material-icons">
+          chevron_right
+        </i>
+      </a>
+    </li>
+    <li
+      class="m-discoveryTrends__trend m-discoverTrends__trend--feedLink"
+      *ngIf="(trending$ | async).length"
+    >
+      <a [routerLink]="parentPath + '/feeds/trending'"
+        ><div>
+          <h4 i18n="@@DISCOVERY_TAGS__SEE_TRENDING_FEED">See trending feed</h4>
+        </div>
+        <i class="m-discoveryTrendListItem__chevron material-icons">
+          chevron_right
+        </i></a
+      >
+    </li>
+  </ul>
+</section>

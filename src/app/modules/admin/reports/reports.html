@@ -1,0 +1,185 @@
+<div class="mdl-tabs__tab-bar">
+  <a
+    [routerLink]="['/admin/reports/review']"
+    class="mdl-tabs__tab"
+    [ngClass]="{ 'is-active': filter == 'reports' }"
+    >Reports</a
+  >
+  <a
+    [routerLink]="['/admin/appeals/appealed']"
+    class="mdl-tabs__tab"
+    [ngClass]="{ 'is-active': filter == 'appeals' }"
+    >Appeals</a
+  >
+  <div class="m-admin-reports--tab-spacer"></div>
+  <ng-container *ngIf="filter == 'reports'">
+    <a
+      [routerLink]="['/admin', this.filter, 'review']"
+      class="mdl-tabs__tab"
+      [ngClass]="{ 'is-active': type == 'review' }"
+      >Review Pending</a
+    >
+    <a
+      [routerLink]="['/admin', this.filter, 'archived']"
+      class="mdl-tabs__tab"
+      [ngClass]="{ 'is-active': type == 'archived' }"
+      >Archived</a
+    >
+    <a
+      [routerLink]="['/admin', this.filter, 'actioned']"
+      class="mdl-tabs__tab"
+      [ngClass]="{ 'is-active': type == 'actioned' }"
+      >History</a
+    >
+  </ng-container>
+  <ng-container *ngIf="filter == 'appeals'">
+    <a
+      [routerLink]="['/admin', this.filter, 'appealed']"
+      class="mdl-tabs__tab"
+      [ngClass]="{ 'is-active': type == 'appealed' }"
+      >Review Pending</a
+    >
+    <a
+      [routerLink]="['/admin', this.filter, 'appeal_approved']"
+      class="mdl-tabs__tab"
+      [ngClass]="{ 'is-active': type == 'appeal_approved' }"
+      >Approved</a
+    >
+    <a
+      [routerLink]="['/admin', this.filter, 'appeal_rejected']"
+      class="mdl-tabs__tab"
+      [ngClass]="{ 'is-active': type == 'appeal_rejected' }"
+      >Rejected</a
+    >
+  </ng-container>
+</div>
+
+<div class="mdl-grid m-admin-reports" style="max-width:600px">
+  <div class="mdl-cell mdl-cell--12-col">
+    <!--<div class="mdl-spinner mdl-spinner&#45;&#45;single-color mdl-js-spinner is-active" [hidden]="reports.length > 0 || !inProgress"></div>-->
+
+    <div
+      class="mdl-card__supporting-text m-no-reports"
+      [hidden]="inProgress || moreData || reports.length > 0"
+    >
+      <ng-container>There are no {{ filter }}.</ng-container>
+    </div>
+
+    <div
+      class="mdl-card mdl-shadow--4dp m-report"
+      *ngFor="let report of reports; let i = index"
+    >
+      <div class="m-report-meta">
+        <p *ngIf="report?.reporterObj?.username">
+          <span>Reported by:</span>
+          <a [routerLink]="['/', report.reporterObj.username]" target="_blank">
+            @{{report.reporterObj.username }}
+          </a>
+        </p>
+
+        <p *ngIf="report?.reason">
+          <span>Subject:</span>
+          <select [(ngModel)]="report.reason">
+            <option
+              [value]="reason.value"
+              [selected]="report.reason == reason.value"
+              *ngFor="let reason of reasons"
+              >{{reason.label}}</option
+            >
+          </select>
+          <!--{{ parseReason(report.reason) }}-->
+        </p>
+
+        <p *ngIf="report?.reason_note">
+          <span>Message:</span> {{ report.reason_note }}
+        </p>
+
+        <p *ngIf="report?.time_created">
+          <span>Date:</span> {{ report.time_created * 1000 | date: 'medium' }}
+        </p>
+
+        <p *ngIf="report?.action">
+          <span>Last Action:</span>
+          {{ parseAction(report.action) }}
+        </p>
+
+        <p *ngIf="report?.appeal_note">
+          <span>Appeal Note:</span>
+          {{ report.appeal_note }}
+        </p>
+      </div>
+
+      <minds-card
+        [object]="report.entityObj"
+        hostClass="mdl-card"
+        *ngIf="report.entityObj && report.entityObj.type != 'comment'"
+      ></minds-card>
+      <div
+        *ngIf="report.entityObj && report.entityObj.type == 'comment'"
+        class="m-comment-wrapper"
+      >
+        <div class="m-admin-reports--comment-note">
+          <a
+            target="_blank"
+            [routerLink]="['/newsfeed', report.entityObj.entity_guid]"
+            >View parent and its comment thread</a
+          >
+        </div>
+        <m-comment [comment]="report.entityObj" class="mdl-card"></m-comment>
+      </div>
+      <div *ngIf="!report.entityObj" class="m-comment-wrapper">
+        <div class="m-admin-reports--comment-note">
+          Post not found
+        </div>
+      </div>
+
+      <div class="mdl-card__supporting-text m-action-buttons">
+        <ng-container *ngIf="filter == 'reports'">
+          <ng-container *ngIf="type == 'review'">
+            <m-button (onAction)="archive(report, i)">
+              Archive
+            </m-button>
+          </ng-container>
+
+          <ng-container *ngIf="type == 'review' || type == 'archived'">
+            <m-button (onAction)="explicit(report, i)">
+              Mark as <i class="material-icons">explicit</i>
+            </m-button>
+
+            <m-button
+              *ngIf="report.entityObj
+                && report.entityObj.type != 'comment'
+                && report.entityObj.type != 'user'
+                "
+              (onAction)="spam(report, i)"
+            >
+              Mark as spam
+            </m-button>
+
+            <m-button color="red" (onAction)="delete(report, i)">
+              Delete
+            </m-button>
+          </ng-container>
+        </ng-container>
+
+        <ng-container *ngIf="type == 'appealed'">
+          <m-button color="blue" (onAction)="approveAppeal(report, i)">
+            Approve
+          </m-button>
+
+          <m-button color="red" (onAction)="rejectAppeal(report, i)">
+            Reject
+          </m-button>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+
+  <infinite-scroll
+    distance="25%"
+    (load)="load()"
+    [moreData]="moreData"
+    [inProgress]="inProgress"
+  >
+  </infinite-scroll>
+</div>

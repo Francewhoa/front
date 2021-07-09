@@ -1,0 +1,33 @@
+<div class="m-confirm-password--modal">
+  <div class="m-confirm-password--modal--header">
+    <h2>
+      <span i18n="@@M__CREATOR__CONFIRM_PASSWORD">Confirm password</span>
+    </h2>
+  </div>
+  <form
+    (submit)="$event.preventDefault()"
+    [formGroup]="form"
+    class="mdl-card mdl-color-text--blue-grey-400 m-form"
+  >
+    <div class="m-layout--row">
+      <div class="m-layout--cell">
+        <input
+          type="password"
+          id="password"
+          class="m-input"
+          formControlName="password"
+          placeholder="Password"
+          i18n-placeholder="@@M__COMMON__PASSWORD"
+          (keydown.enter)="submit(); $event.preventDefault()"
+        />
+      </div>
+    </div>
+
+    <div class="m-layout--row">
+      <div class="m-layout--spacer"></div>
+      <m-button color="blue" (onAction)="submit()" [saving]="inProgress">
+        <ng-container i18n="@@M__ACTION__SUBMIT">Submit</ng-container>
+      </m-button>
+    </div>
+  </form>
+</div>

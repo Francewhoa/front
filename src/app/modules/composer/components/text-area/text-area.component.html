@@ -1,0 +1,70 @@
+<div class="m-composer__textArea">
+  <div class="m-composerTextarea__title" *ngIf="attachment$ | async">
+    <textarea
+      rows="1"
+      type="text"
+      placeholder="Title"
+      i18n-placeholder="@@COMMON__TITLE"
+      [ngModel]="(title$ | async) || ''"
+      [hidden]="(title$ | async) === null"
+      [disabled]="isPosting$ | async"
+      (ngModelChange)="onTitleChange($event)"
+      data-cy="composer-activity-title"
+      #titleInput
+      [autoGrow]
+    ></textarea>
+
+    <div
+      class="m-composerTextareaTitle__toggle"
+      (click)="toggleTitle()"
+      [hidden]="isPosting$ | async"
+      data-cy="composer-activity-title"
+    >
+      <m-icon
+        [iconId]="
+          (title$ | async) === null
+            ? 'add_circle_outline'
+            : 'remove_circle_outline'
+        "
+        sizeFactor="20"
+      ></m-icon>
+      <span i18n="@@COMMON__TITLE">Title</span>
+    </div>
+  </div>
+  <m-text-input--autocomplete-container>
+    <textarea
+      class="m-composerTextarea__message"
+      placeholder="Speak your mind..."
+      i18n-placeholder="@@COMPOSER_POPUP__SPEAK_YOUR_MINDS_ELLIPSIS"
+      [id]="inputId"
+      [ngModel]="message$ | async"
+      [disabled]="isPosting$ | async"
+      (ngModelChange)="onMessageChange($event)"
+      (filePaste)="filePaste.emit($event)"
+      m-attachment-paste
+      tabindex="0"
+      data-cy="composer-textarea"
+      mTextInputAutocomplete
+      [triggerCharacters]="['#', '@']"
+      [findChoices]="suggestions.findSuggestions"
+      [getChoiceLabel]="suggestions.getChoiceLabel"
+      [itemTemplate]="itemTemplate"
+      [adjustForScrollOffset]="true"
+      (input)="resizeMessageHeight()"
+      [class.m-composerTextarea__textArea--short]="compactMode"
+      #messageInput
+    >
+    </textarea>
+  </m-text-input--autocomplete-container>
+
+  <ng-template
+    #itemTemplate
+    let-choice="choice"
+    let-selectChoice="selectChoice"
+  >
+    <m-post-autocomplete-item-renderer
+      [choice]="choice"
+      [selectChoice]="selectChoice"
+    ></m-post-autocomplete-item-renderer>
+  </ng-template>
+</div>

@@ -1,0 +1,42 @@
+<m-discovery__tabs></m-discovery__tabs>
+<m-loadingSpinner [inProgress]="inProgress$ | async"> </m-loadingSpinner>
+
+<m-discovery__noTagsPrompt
+  *ngIf="showNoTagsPrompt$ | async"
+  (completed)="refresh()"
+  @fastFade
+></m-discovery__noTagsPrompt>
+
+<ul
+  class="m-discovery__trends"
+  @fastFade
+  *ngIf="(trends$ | async).length > 0 || (hero$ | async)"
+>
+  <li
+    class="m-discoveryTrends__trend m-discoveryTrends__trend--hero"
+    *ngIf="hero$ | async"
+  >
+    <m-discoveryTrends__listItem
+      [trend]="hero$ | async"
+    ></m-discoveryTrends__listItem>
+  </li>
+  <li
+    *ngFor="let trend of trends$ | async | slice: 0:1"
+    class="m-discoveryTrends__trend"
+  >
+    <m-discoveryTrends__listItem [trend]="trend"></m-discoveryTrends__listItem>
+  </li>
+  <!-- ---------------------- -->
+  <m-discovery__cardCarousel
+    type="suggestions"
+    class="m-discoveryTrends__trend"
+  ></m-discovery__cardCarousel>
+  <!-- ---------------------- -->
+  <li
+    *ngFor="let trend of trends$ | async | slice: 1"
+    class="m-discoveryTrends__trend"
+  >
+    <m-discoveryTrends__listItem [trend]="trend"></m-discoveryTrends__listItem>
+  </li>
+</ul>
+<m-discovery__feedsList *ngIf="showPreferredFeed"></m-discovery__feedsList>

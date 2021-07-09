@@ -1,0 +1,37 @@
+<m-settingsV2__header>
+  <div
+    class="m-settingsV2__headerLabel"
+    i18n="@@SETTINGS__PRO__SUBSCRIPTION__CANCEL__LABEL"
+  >
+    Cancel Pro Subscription
+  </div>
+  <div
+    class="m-settingsV2__desc"
+    i18n="@@SETTINGS__PRO__SUBSCRIPTION__CANCEL__DESCRIPTION"
+  >
+    Manage your subscription.
+    <a class="m-form__upgradeLink" routerLink="/pro" *ngIf="!isActive"
+      >Upgrade to Pro</a
+    >
+  </div>
+</m-settingsV2__header>
+
+<div *ngIf="init" class="m-formLayout--buttonLeft">
+  <div class="m-form__buttonsContainer">
+    <m-button
+      [disabled]="(isActive && !hasSubscription) || inProgress || !isActive"
+      [saving]="inProgress"
+      color="red"
+      (onAction)="cancelSubscription()"
+      i18n="@@SETTINGS__PRO__CANCEL__CANCEL_SUBSCRIPTION"
+    >
+      Cancel Subscription
+    </m-button>
+  </div>
+</div>
+<span
+  class="m-settingV2__proCancelNotice"
+  i18n="@@PRO_SUBSCRIPTION__DISABLED_BECAUSE_CANCELLED"
+  *ngIf="isActive && !hasSubscription"
+  >You still have Minds Pro until {{ expiryString }}.</span
+>

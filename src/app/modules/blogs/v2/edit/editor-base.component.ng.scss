@@ -1,0 +1,200 @@
+@import 'defaults.scss';
+
+:host {
+  .m-blogEditor {
+    &__bannerEditorContainer {
+      flex-grow: 1;
+      overflow-y: auto;
+    }
+
+    @include m-theme() {
+      border-right: 1px solid themed($m-borderColor--primary);
+      color: 1px solid themed($m-bgColor--primary);
+    }
+
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 76px);
+
+    .m-blogEditor__bodyContainer {
+      padding-bottom: 40px;
+    }
+
+    .m-blogEditor__bannerImageContainer {
+      // new stacking context
+      position: relative;
+      z-index: 0;
+
+      img {
+        width: 100%;
+
+        // Switch height here depending on date/time
+
+        // Address issue here:
+        max-height: 60vh;
+        height: 60vh;
+
+        object-fit: cover;
+      }
+
+      .m-blogEditor__bannerToolbar {
+        position: absolute;
+        right: 40px;
+        top: 40px;
+        display: flex;
+        flex-direction: row;
+        z-index: 1; // above banner
+
+        @media screen and (max-width: $min-desktop) {
+          // top: 20px;
+        }
+        > * {
+          margin-left: 10px;
+        }
+      }
+    }
+
+    .wide-banner {
+      img {
+        @media screen and (max-width: 700px) {
+          height: calc(50vw);
+        }
+
+        @include mobile-only {
+          height: 55vw;
+        }
+
+        @media screen and (min-width: 700px) and (max-width: 1040px) {
+          height: 344px;
+        }
+
+        height: 500px;
+      }
+    }
+
+    .m-blogEditor__container {
+      position: relative;
+      flex-grow: 1;
+      flex-shrink: 1;
+
+      padding: 40px 100px 80px 100px;
+      @media screen and (max-width: $min-desktop) {
+        padding: 20px 40px;
+      }
+
+      > * + * {
+        margin-top: 40px;
+      }
+
+      .m-blogEditor__bannerContainer {
+        display: flex;
+
+        .m-blogEditor__bannerUploader {
+          display: flex;
+          align-items: center;
+
+          @media screen and (max-width: $min-desktop) {
+            display: block;
+          }
+
+          .m-blogEditor__bannerText {
+            font-weight: bold;
+            font-size: 12pt;
+            padding-right: 12px;
+            display: flex;
+            align-items: center;
+
+            i {
+              margin-right: 4px;
+            }
+
+            span {
+              @include m-theme() {
+                color: themed($m-textColor--secondary);
+              }
+
+              font-weight: 400;
+              font-size: 13px;
+              padding-left: 15px;
+            }
+
+            @media screen and (max-width: $min-desktop) {
+              margin-bottom: 4px;
+            }
+
+            .m-blogEditor__bannerUploadButton {
+              background-color: unset;
+              border: none;
+              display: flex;
+              align-items: center;
+              padding: 0;
+              cursor: pointer;
+              @include m-theme() {
+                color: themed($m-textColor--primary);
+              }
+            }
+          }
+
+          .m-blogEditor__bannerSizeText {
+            @include m-theme() {
+              color: themed($m-textColor--secondary);
+            }
+          }
+        }
+
+        .m-blogEditor__ellipsis {
+          position: absolute;
+          right: 100px;
+          @media screen and (max-width: $min-desktop) {
+            right: 50px;
+          }
+          m-blogEditor__dropdown {
+            i {
+              @include m-theme() {
+                color: themed($m-textColor--primary);
+              }
+            }
+          }
+        }
+      }
+
+      .m-blogEditor__titleContainer {
+        .m-blogEditor__titleInput {
+          width: 100%;
+          background: unset;
+          @include m-theme() {
+            color: themed($m-textColor--primary);
+          }
+          border: unset;
+          font-weight: 500;
+          outline: none;
+          font-family: 'Roboto';
+          font-size: 26px;
+          font-weight: bold;
+          resize: none;
+          overflow: hidden;
+
+          &::placeholder {
+            @include m-theme() {
+              color: themed($m-textColor--secondary);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .m-blogEditor__legacyPrompt {
+    padding: 20px 40px;
+    box-sizing: border-box;
+
+    p {
+      @include m-theme() {
+        border-left: 5px solid themed($m-borderColor--primary);
+        color: themed($m-textColor--secondary);
+      }
+      padding: 0 20px;
+      margin: 0;
+    }
+  }
+}

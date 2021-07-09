@@ -1,0 +1,15 @@
+<div class="m-discoveryFeeds__feed">
+  <m-discovery__feedItem
+    *ngFor="let entity$ of entities$ | async"
+    [entity]="entity$ | async"
+    [openComments]="false"
+  ></m-discovery__feedItem>
+
+  <infinite-scroll
+    distance="25%"
+    (load)="loadMore()"
+    [moreData]="hasMoreData$ | async"
+    [inProgress]="inProgress$ | async"
+  >
+  </infinite-scroll>
+</div>

@@ -1,0 +1,254 @@
+.m--blockchain--transaction-overlay--transparant {
+  background: none !important;
+}
+
+.m--blockchain--transaction-overlay {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  @include z-index(modal);
+
+  user-select: none;
+  @include m-theme() {
+    background-color: rgba(themed($m-white), 0.99);
+    color: themed($m-grey-900);
+  }
+
+  .m--blockchain--transaction-overlay--coloured-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    padding: 8px;
+    font-family: 'Roboto', sans-serif;
+    font-size: 20px;
+    font-weight: 500;
+    cursor: pointer;
+    text-decoration: none;
+    margin-bottom: 12px;
+    @include m-theme() {
+      color: themed($m-white);
+      background-color: themed($m-green);
+    }
+
+    span {
+      text-align: center;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+      font-weight: 600;
+    }
+  }
+
+  .m--blockchain--transaction-overlay--balance {
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    font-weight: 600;
+    font-size: 14px;
+    margin-bottom: $minds-padding * 5;
+    @include m-theme() {
+      color: themed($m-grey-800);
+    }
+
+    .m--blockchain--transaction-overlay--balance--subtext {
+      display: block;
+      margin-bottom: $minds-padding * 2;
+      letter-spacing: 1px;
+      font-size: 18px;
+    }
+    .m--blockchain--transaction-overlay--balance--amount {
+      font-weight: 200;
+    }
+  }
+
+  .m--blockchain--transaction-overlay--content {
+    max-width: 1280px;
+    width: 100%;
+
+    font-weight: 500;
+    font-size: 16px;
+
+    .m--blockchain--transaction-overlay--logo {
+      height: 68px;
+      margin-bottom: 24px;
+      margin-left: 4px;
+    }
+
+    .m--blockchain--transaction-overlay--title {
+      font-size: 42px;
+      margin: 0;
+      margin-bottom: 16px;
+      font-weight: bold;
+      line-height: 42px;
+      @include m-theme() {
+        color: themed($m-grey-800);
+      }
+    }
+    .m--blockchain--transaction-overlay--subtitle {
+      text-transform: uppercase;
+      text-rendering: optimizeLegibility;
+      -webkit-font-smoothing: antialiased;
+      font-size: 16px;
+      @include m-theme() {
+        color: themed($m-grey-800);
+      }
+    }
+    .m--blockchain--transaction-overlay--help {
+      display: flex;
+      align-items: center;
+      min-height: 200px;
+      text-transform: uppercase;
+      @include m-theme() {
+        color: themed($m-grey-200);
+      }
+      a {
+        cursor: pointer;
+        text-decoration: none;
+      }
+    }
+    .m--blockchain--transaction-overlay--note {
+      line-height: 20px;
+      font-size: 16px;
+      @include m-theme() {
+        color: themed($m-grey-800);
+      }
+    }
+  }
+}
+
+.m--blockchain--transaction-overlay--field {
+  margin: ($minds-padding * 2) 0;
+
+  .m-btn {
+    margin-right: $minds-margin;
+  }
+
+  .mdl-checkbox {
+    .mdl-checkbox__label {
+      font-size: inherit;
+    }
+
+    .mdl-checkbox__box-outline {
+      @include m-theme() {
+        background-color: rgba(themed($m-black), 0.15);
+        border-color: rgba(themed($m-black), 0.15);
+      }
+    }
+
+    &.is-checked .mdl-checkbox__tick-outline {
+      mask: none;
+      @include m-theme() {
+        background-color: rgba(themed($m-black), 0.15);
+      }
+    }
+
+    .mdl-checkbox__ripple-container .mdl-ripple {
+      @include m-theme() {
+        background-color: rgba(themed($m-black), 0.15);
+      }
+    }
+  }
+}
+
+.m--blockchain--transaction-overlay--warning,
+.m--blockchain--transaction-overlay--info {
+  max-width: 600px;
+  //margin: ($minds-padding * 2) 0;
+  letter-spacing: 0.25px;
+}
+
+.m--blockchain--transaction-overlay--info {
+  @include m-theme() {
+    color: themed($m-blue-dark);
+  }
+}
+
+.m--blockchain--transaction-overlay--warning {
+  font-size: 13px;
+  @include m-theme() {
+    color: themed($m-red-dark);
+  }
+}
+
+.m--blockchain--transaction-overlay--field-label {
+  display: block;
+  margin-bottom: $minds-padding;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  font-weight: 600;
+  @include m-theme() {
+    color: themed($m-grey-800);
+  }
+}
+
+.m--blockchain--transaction-overlay--checkbox-label {
+  font-size: 14px;
+  span {
+    text-transform: uppercase;
+    letter-spacing: 0.25px;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    font-weight: 600;
+    font-size: 14px;
+    @include m-theme() {
+      color: themed($m-grey-800);
+    }
+  }
+}
+
+.m--blockchain--transaction-overlay--field-input-lg,
+.m--blockchain--transaction-overlay--field-input {
+  padding: $minds-padding * 2;
+  -webkit-appearance: none;
+  border-radius: 4px;
+  font-size: 18px;
+  @include m-theme() {
+    color: themed($m-grey-800);
+    background-color: themed($m-bgColor--primary);
+    border: 1px solid themed($m-borderColor--primary);
+  }
+
+  &.m--blockchain--transaction-overlay--dropping {
+    @include m-theme() {
+      box-shadow: inset 0 0 10px themed($m-blue-dark);
+    }
+  }
+}
+
+.m--blockchain--transaction-overlay--field-input-lg {
+  width: 600px;
+  max-width: 90vw;
+}
+
+.m--blockchain--transaction-overlay--field-input {
+  width: 300px;
+  max-width: 90vw;
+}
+
+.m--blockchain--transaction-overlay--button {
+  letter-spacing: 2.33px;
+  appearance: none;
+  padding: $minds-padding ($minds-padding * 4);
+  background: none;
+  border-radius: 3;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  text-transform: uppercase;
+  cursor: pointer;
+  @include m-theme() {
+    color: themed($m-grey-700);
+    border: 1px solid themed($m-grey-700);
+  }
+
+  &[disabled] {
+    cursor: default !important;
+    opacity: 0.65;
+  }
+}

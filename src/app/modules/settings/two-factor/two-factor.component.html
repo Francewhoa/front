@@ -1,0 +1,88 @@
+<div class="m-settings--section m-border">
+  <h4 i18n="@@MINDS__SETTINGS__2FA_TITLE">Two Factor Authentication</h4>
+
+  <!-- OVERVIEW -->
+  <div
+    class="mdl-card__supporting-text"
+    *ngIf="!inProgress && telno && !waitingForCheck"
+  >
+    <m-button (onAction)="cancel()">
+      <ng-container i18n="@@MINDS__SETTINGS__REMOVE_2FA_ACTION">
+        Remove two factor
+      </ng-container>
+    </m-button>
+  </div>
+
+  <!-- SETUP -->
+  <div
+    class="mdl-card__supporting-text"
+    *ngIf="(!inProgress && !telno) || sendingSms"
+  >
+    <div class="minds-settings-text">
+      <ng-container>
+        Your SMS number.
+      </ng-container>
+    </div>
+    <div class="mdl-textfield mdl-js-textfield textfield-demo" [mdl]>
+      <m-phoneInput
+        [ngModel]="number"
+        (ngModelChange)="numberChange($event)"
+        ngDefaultControl
+      ></m-phoneInput>
+    </div>
+    <p class="mdl-color-text--red">{{ error }}</p>
+    <div class="m-twoFactor__sendButtonWrapper">
+      <m-button
+        color="blue"
+        class="m-twoFactor__sendButton"
+        id="numberSendButton"
+        (onAction)="setup()"
+        [disabled]="waitingForCheck"
+      >
+        <ng-container i18n="@@MINDS__SETTINGS__SETUP_ACTION">
+          Setup
+        </ng-container>
+      </m-button>
+    </div>
+  </div>
+
+  <!-- CHECK -->
+  <div
+    class="mdl-card__supporting-text"
+    *ngIf="!inProgress && telno && waitingForCheck"
+  >
+    <div class="minds-settings-text" *ngIf="!sendingSms">
+      <ng-container i18n="@@MINDS__SETTINGS__SENT_SMS_LABEL">
+        We sent an SMS to +<b>{{ telno }}</b
+        >. Enter the code below to complete your two factor setup.
+      </ng-container>
+    </div>
+    <div class="minds-settings-text" *ngIf="sendingSms">
+      <ng-container i18n="@@MINDS__SETTINGS__SENDING_SMS_LABEL">
+        We are sending an SMS to <b>{{ telno }}</b
+        >. Enter the code below to complete your two factor
+      </ng-container>
+      setup.
+    </div>
+    <div class="mdl-textfield mdl-js-textfield textfield-demo" [mdl]>
+      <input class="mdl-textfield__input" type="text" #code />
+      <label
+        class="mdl-textfield__label m-twoFactor__codeInputLabel"
+        for="twoFactorAuthentication"
+        i18n="@@M__COMMON__ENTER_2FA_CODE"
+      >
+        Enter your code here
+      </label>
+    </div>
+    <div>
+      <m-button color="blue" size="xsmall" (onAction)="check(code.value)">
+        <ng-container i18n="@@M__ACTION__CONFIRM">Confirm</ng-container>
+      </m-button>
+      <m-button size="xsmall" (onAction)="check(code.value)">
+        <ng-container i18n="@@MINDS__SETTINGS__2FA_RETRY_ACTION">
+          Retry
+        </ng-container>
+      </m-button>
+    </div>
+  </div>
+</div>

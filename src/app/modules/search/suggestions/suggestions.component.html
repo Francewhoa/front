@@ -1,0 +1,87 @@
+<div
+  class="m-searchBarSuggestions"
+  (mousedown)="mousedown($event)"
+  *ngIf="session.isLoggedIn()"
+  [hidden]="hidden"
+>
+  <m-loadingEllipsis *ngIf="inProgress"></m-loadingEllipsis>
+
+  <!-- IF SEARCH BAR IS EMPTY, DISPLAY RECENTS FROM LOCAL STORAGE -->
+  <ng-container *ngIf="!q && recent && recent.length > 0">
+    <!-- <div class="m-searchBar__toolbar">
+      <span i18n="@@SEARCH_SUGGESTIONS__SEARCH_HISTORY">
+        Search History
+      </span>
+      <span
+        class="m-searchBarSuggestions__clearResults"
+        (click)="clearHistory()"
+        i18n="@@SEARCH_SUGGESTIONS__CLEAR_HISTORY"
+      >
+        Clear History
+      </span>
+    </div> -->
+
+    <ng-container *ngFor="let suggestion of recent">
+      <a
+        class="m-searchBarSuggestions__suggestion m-searchBarSuggestions__suggestion--text"
+        *ngIf="suggestion.type === 'text'"
+        [routerLink]="['/discovery/search']"
+        [queryParams]="{ q: suggestion.value, f: 'top', t: 'all' }"
+      >
+        <div><i class="material-icons">search</i></div>
+        <span>{{ suggestion.value }}</span>
+      </a>
+      <ng-container
+        *ngIf="suggestion.type === 'user'"
+        [ngTemplateOutlet]="channelSuggestion"
+        [ngTemplateOutletContext]="{ suggestion: suggestion }"
+      ></ng-container>
+      <a
+        class="m-searchBarSuggestions__suggestion m-searchBarSuggestions__suggestion--publisher"
+        *ngIf="suggestion.type === 'group'"
+        [routerLink]="['/groups/profile/', suggestion.guid]"
+      >
+        <img src="{{ cdnUrl }}fs/v1/avatars/{{ suggestion.guid }}/small" />
+        <span>{{ suggestion.name }}</span>
+      </a>
+    </ng-container>
+  </ng-container>
+
+  <!-- IF SEARCH BAR HAS QUERY INPUT
+    SHOW SUGGESTED CHANNELS API RESPONSE -->
+  <ng-container *ngIf="q && !inProgress">
+    <ng-container *ngIf="suggestions.length > 0">
+      <ng-container
+        *ngFor="let suggestion of suggestions"
+        [ngTemplateOutlet]="channelSuggestion"
+        [ngTemplateOutletContext]="{ suggestion: suggestion }"
+      >
+      </ng-container>
+    </ng-container>
+    <ng-container *ngIf="noResults"
+      ><div class="m-searchBarSuggestions__noResults">
+        <span
+          >We couldn't find any channels that match <b>{{ q }}</b></span
+        >
+        <a
+          [routerLink]="['/discovery/search']"
+          [queryParams]="{ q: q, f: 'top', t: 'all' }"
+          >See discovery results instead</a
+        >
+      </div>
+    </ng-container>
+  </ng-container>
+</div>
+
+<ng-template #channelSuggestion let-suggestion="suggestion">
+  <a
+    class="m-searchBarSuggestions__suggestion m-searchBarSuggestions__suggestion--publisher"
+    [routerLink]="['/', suggestion.username]"
+  >
+    <img src="{{ cdnUrl }}icon/{{ suggestion.guid }}/small" />
+    <div>
+      <span>{{ suggestion.name }}</span>
+      <span>@{{ suggestion.username }}</span>
+    </div>
+  </a>
+</ng-template>

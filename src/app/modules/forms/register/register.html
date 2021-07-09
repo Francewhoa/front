@@ -1,0 +1,259 @@
+<div
+  class="mdl-card mdl-color--red-500 mdl-color-text--blue-grey-50  mdl-shadow--2dp minds-login-box m-error-box"
+  style="min-height:0;"
+  [hidden]="showInlineErrors || !errorMessage"
+>
+  <div class="mdl-card__supporting-text mdl-color-text--blue-grey-50">
+    <ng-container *ngTemplateOutlet="errorTemplate"></ng-container>
+  </div>
+</div>
+
+<ng-template #errorTemplate>
+  {{ errorMessage }}
+</ng-template>
+
+<h3 *ngIf="showTitle" i18n="@@REGISTER__JOIN__TITLE">
+  Join the Minds Revolution
+</h3>
+<span
+  class="m-register__alreadyAUser"
+  *ngIf="showTitle"
+  i18n="@@REGISTER__ALREADY__HAVE__ACOUNT__LINK"
+>
+  Already have an account?
+  <a [routerLink]="'/login'" queryParamsHandling="merge">Login</a>
+</span>
+
+<!-- START: Register -->
+<form
+  (submit)="$event.preventDefault()"
+  [formGroup]="form"
+  class="m-form m-login-box m-formWrapper"
+  [hidden]="hideLogin"
+  *ngIf="!showFbForm"
+>
+  <div class="m-layout__grid">
+    <div class="m-form__field--text stretchedField">
+      <div class="m-form__row--label">
+        <label for="username" *ngIf="showLabels" i18n="@@M__COMMON__USERNAME">
+          Username
+        </label>
+      </div>
+      <div class="m-form__row--input">
+        <input
+          type="text"
+          id="username"
+          formControlName="username"
+          [placeholder]="showLabels ? '' : 'Username'"
+          i18n-placeholder="@@M__COMMON__USERNAME"
+          readonly
+          onfocus="this.removeAttribute('readonly');"
+          [class.m-input--hide-placeholder]="showLabels"
+          [pattern]="alphanumericPattern"
+          data-cy="data-minds-register-username-input"
+        />
+      </div>
+      <div
+        class="m-register__error"
+        [style.visibility]="showError('username') ? 'visible' : 'hidden'"
+      >
+        <ng-container
+          *ngIf="this.form.get('username').errors?.minlength"
+          i18n="@@MINDS__REGISTER__EXCEPTION__USERNAME_TOO_SHORT"
+        >
+          Must be at least 4 characters long.
+        </ng-container>
+        <ng-container
+          *ngIf="this.form.get('username').errors?.maxlength"
+          i18n="@@MINDS__REGISTER__EXCEPTION__USERNAME_TOO_LONG"
+        >
+          Cannot be longer than 128 characters.
+        </ng-container>
+        <ng-container
+          *ngIf="this.form.get('username').errors?.pattern"
+          i18n="@@MINDS__REGISTER__EXCEPTION__NOT_ALPHANUMERIC"
+        >
+          Usernames can only have letters, numbers or underscores. Special
+          characters (e.g. @^%.) and spaces are not allowed.
+        </ng-container>
+        <ng-container
+          *ngIf="username.errors?.existingUsername"
+          i18n="@@MINDS__REGISTER__EXCEPTION__USERNAME_TAKEN"
+        >
+          Username already taken.
+        </ng-container>
+      </div>
+    </div>
+
+    <div class="m-form__field--text stretchedField">
+      <div class="m-form__row--label">
+        <label for="email" *ngIf="showLabels" i18n="@@COMMON__EMAIL">
+          Email
+        </label>
+      </div>
+      <div class="m-form__row--input">
+        <input
+          type="email"
+          id="email"
+          formControlName="email"
+          [placeholder]="showLabels ? '' : 'Email'"
+          i18n-placeholder="email placeholder|@@FORMS__REGISTER__EMAIL_PLACEHOLDER"
+          [class.m-input--hide-placeholder]="showLabels"
+          data-cy="data-minds-register-email-input"
+        />
+      </div>
+      <div
+        class="m-register__error"
+        [style.visibility]="showError('email') ? 'visible' : 'hidden'"
+      >
+        <ng-container
+          *ngIf="this.form.get('email').errors?.email"
+          i18n="@@MINDS__REGISTER__EXCEPTION__INVALID_EMAIL"
+        >
+          Invalid email
+        </ng-container>
+      </div>
+    </div>
+    <div class="m-form__field--text stretchedField">
+      <div class="m-form__row--label">
+        <label for="password" *ngIf="showLabels" i18n="@@COMMON__PASSWORD">
+          Password
+        </label>
+      </div>
+      <m-popover (change)="onPopoverChange($event)" #popover>
+        <div class="m-form__row--input">
+          <input
+            type="password"
+            id="password"
+            formControlName="password"
+            [placeholder]="showLabels ? '' : 'Password'"
+            i18n-placeholder="@@M__COMMON__PASSWORD"
+            readonly
+            onfocus="this.removeAttribute('readonly');"
+            (focus)="onPasswordFocus()"
+            (blur)="onPasswordBlur()"
+            (ngModelChange)="popover.show(); popover.checkRules($event)"
+            [class.m-input--hide-placeholder]="showLabels"
+            data-cy="data-minds-register-password-input-1"
+          />
+        </div>
+      </m-popover>
+      <div
+        class="m-register__error"
+        [style.visibility]="showError('password') ? 'visible' : 'hidden'"
+      >
+        <ng-container
+          *ngIf="this.form.get('password').errors?.invalidPassword"
+          i18n="@@MINDS__REGISTER__EXCEPTION__INVALID_PASSWORD"
+        >
+          Invalid password
+        </ng-container>
+      </div>
+    </div>
+    <div
+      class="m-form__field--text stretchedField m-registerForm__confirmPassword"
+      [hidden]="!form.value.password"
+    >
+      <div class="m-form__row--label">
+        <label
+          for="password2"
+          *ngIf="showLabels"
+          i18n="@@MINDS_REGISTRATION__CONFIRM_YOUR_PASSWORD"
+        >
+          Confirm your password
+        </label>
+      </div>
+      <div class="m-form__row--input">
+        <input
+          type="password"
+          id="password2"
+          formControlName="password2"
+          [placeholder]="showLabels ? '' : 'Confirm your password'"
+          i18n-placeholder="@@FORMS__REGISTER__CONFIRM_PASSWORD_PLACEHOLDER"
+          (keydown.enter)="register($event)"
+          readonly
+          onfocus="this.removeAttribute('readonly');"
+          [class.m-input--hide-placeholder]="showLabels"
+          data-cy="data-minds-register-password-input-2"
+          [class.ng-invalid]="this.form.errors?.passwordConfirming"
+        />
+      </div>
+      <div
+        class="m-register__error"
+        [style.visibility]="this.form.get('password2').touched && this.form.get('password2').dirty ? 'visible' : 'hidden'"
+      >
+        <ng-container
+          *ngIf="this.form.errors?.passwordConfirming"
+          i18n="@@MINDS__REGISTER__EXCEPTION__INVALID_EMAIL"
+        >
+          Passwords must match
+        </ng-container>
+      </div>
+    </div>
+
+    <div
+      *ngIf="form.value.password "
+      class="m-form__field--text stretchedField m-registerForm__captcha"
+    >
+      <div class="m-form__row--label">
+        <label for="captcha" *ngIf="showLabels" i18n="@@COMMON__CAPTCHA">
+          Captcha
+        </label>
+      </div>
+
+      <div class="m-form__row--input">
+        <m-captcha formControlName="captcha"></m-captcha>
+      </div>
+    </div>
+  </div>
+
+  <div
+    class="m-register__formError"
+    [style.visibility]="showInlineErrors && showBigButton && errorMessage ? 'visible' : 'hidden'"
+  >
+    <ng-container *ngTemplateOutlet="errorTemplate"></ng-container>
+  </div>
+
+  <div class="m-layout__row m-register__actions">
+    <div class="m-register__checkboxes">
+      <m-formInput__checkbox formControlName="exclusive_promotions">
+        Receive exclusive token rewards and info
+      </m-formInput__checkbox>
+
+      <m-formInput__checkbox
+        formControlName="tos"
+        data-cy="minds-accept-tos-input"
+      >
+        I accept the
+        <a routerLink="/p/terms" target="_blank"> Terms & Conditions </a>
+      </m-formInput__checkbox>
+    </div>
+
+    <div class="m-layout__spacer"></div>
+
+    <m-button
+      color="blue"
+      (onAction)="register($event)"
+      [saving]="inProgress"
+      [disabled]="!this.form.valid"
+      *ngIf="!showBigButton"
+    >
+      <ng-container i18n="@@FORMS__REGISTER__SIGNUP_ACTION">
+        Signup
+      </ng-container>
+    </m-button>
+
+    <m-button
+      *ngIf="showBigButton"
+      [disabled]="!this.form.valid|| this.passwordFieldValid || inProgress"
+      [saving]="inProgress"
+      color="blue"
+      (onAction)="register($event)"
+    >
+      <ng-container i18n="@@FORMS__REGISTER__JOIN_NOW_ACTION">
+        Join Now
+      </ng-container>
+    </m-button>
+  </div>
+</form>
+<!-- END: Register -->

@@ -1,0 +1,114 @@
+<div
+  class="m-wire__lockScreen"
+  [ngClass]="{
+    isTextOnly: contentType === 'status',
+    isMedia: contentType !== 'status',
+    isVideo: contentType === 'video',
+    'm-wire__lockScreen--minimalMode': minimalMode
+  }"
+  [style.maxHeight.px]="mediaHeight"
+  (click)="$event.stopPropagation(); unlock()"
+  *ngIf="entity.wire_threshold && init"
+>
+  <!-- ------------------------------ -->
+  <!-- OVERLAY -->
+  <!-- ------------------------------ -->
+  <div
+    class="m-wireLockScreen__overlay"
+    *ngIf="showSubmittedInfo && hasTeaser"
+  ></div>
+
+  <!-- ------------------------------ -->
+  <!-- THRESHOLD/TIER REQUIREMENTS -->
+  <!-- ------------------------------ -->
+
+  <div class="m-wireLockScreen__inner">
+    <h5
+      *ngIf="contentType !== 'rich-embed'"
+      class="m-wireLockScreen__message"
+      [class.m-wireLockScreen__message--hasTeaser]="hasTeaser"
+    >
+      <ng-container *ngIf="!showSubmittedInfo && !hasTeaser">
+        <ng-container
+          *ngIf="entity?.wire_threshold?.type; else supportTierText"
+        >
+          <ng-container i18n="@@WIRE__LOCK_SCREEN__CAN_ONLY_BE_SEEN_TITLE_PART"
+            >This post can only be seen by supporters who send</ng-container
+          >
+
+          <ng-container
+            *ngIf="entity?.wire_threshold?.type == 'money'"
+            i18n="@@WIRE__LOCK_SCREEN__OVER_USD_PER_MONTH"
+          >
+            over
+            {{ entity.wire_threshold.min | currency: 'USD':true:'1.0-0' }}/month
+          </ng-container>
+
+          <ng-container
+            *ngIf="entity?.wire_threshold?.type == 'points'"
+            i18n="@@WIRE__LOCK_SCREEN__OVER_POINTS_PER_MONTH"
+          >
+            over {{ entity.wire_threshold.min | number }} points/month
+          </ng-container>
+
+          <ng-container
+            *ngIf="entity?.wire_threshold?.type == 'tokens'"
+            i18n="@@WIRE__LOCK_SCREEN__OVER_TOKENS_PER_MONTH"
+          >
+            over {{ entity.wire_threshold.min | number }} Tokens/month
+          </ng-container>
+
+          <ng-container
+            *ngIf="entity?.ownerObj?.username"
+            i18n="@@WIRE__LOCK_SCREEN__TO_USERNAME_PART"
+          >
+            to @{{ entity.ownerObj.username }}
+          </ng-container>
+        </ng-container>
+
+        <ng-template #supportTierText>
+          <ng-container *ngIf="!isPlus">
+            <ng-container i18n="@@WIRE__SUPPORT__TIER__TEXT" *ngIf="!isCustom">
+              Join @{{ entity.ownerObj.username }}'s
+              {{ entity.wire_threshold.support_tier.name }}
+              Membership to see this post
+            </ng-container>
+            <ng-container i18n="@@WIRE__SUPPORT__TIER__TEXT" *ngIf="isCustom">
+              Join @{{ entity.ownerObj.username }}'s Custom Membership for ${{
+                entity.wire_threshold.support_tier.usd
+              }}
+              per month to see this post
+            </ng-container>
+          </ng-container>
+          <ng-container i18n="@@WIRE__SUPPORT__TIER__TEXT" *ngIf="isPlus">
+            Only Minds+ users can see this post
+          </ng-container>
+        </ng-template>
+      </ng-container>
+
+      <!-- ------------------------------ -->
+      <!-- ONCHAIN PAYMENT IS PROCESSING -->
+      <!-- ------------------------------ -->
+      <ng-container
+        *ngIf="showSubmittedInfo"
+        i18n="@@WIRE__LOCK_SCREEN__RECEIVED_TIMEOUT_LABEL"
+      >
+        We've received your transaction. Please try unlocking this post after it
+        gets processed. We estimate it may take around 5 minutes.</ng-container
+      >
+    </h5>
+
+    <ng-container *ngIf="!showSubmittedInfo">
+      <m-button
+        (onAction)="unlock()"
+        [saving]="inProgress"
+        data-cy="wire-lock-screen-unlock-button"
+        class="m-unlock-button"
+        color="blue"
+        [overlay]="contentType !== 'status'"
+      >
+        <ng-container i18n="@@WIRE__UNLOCK__POST">Unlock Post</ng-container>
+      </m-button>
+    </ng-container>
+  </div>
+</div>

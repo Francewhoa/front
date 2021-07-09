@@ -1,0 +1,42 @@
+<m-marketing
+  class="m-aux__marketing m-aux__marketing--hasHero"
+  [useFullWidth]="false"
+>
+  <div class="m-marketing__main">
+    <div class="m-aux__hero">
+      <div class="m-aux__heroInner">
+        <h1>Canary</h1>
+        <h3>Receive the latest Minds features before everyone else</h3>
+        <m-button
+          (onAction)="user.canary ? turnOff() : turnOn()"
+          (mouseenter)="buttonHovering = true"
+          (mouseleave)="buttonHovering = false"
+          [saving]="inProgress"
+          overlay="true"
+          size="large"
+        >
+          <ng-container *ngIf="!user.canary">
+            Join
+          </ng-container>
+          <ng-container *ngIf="user.canary">
+            {{ buttonHovering ? '  Disable  ' : 'Enabled' }}
+          </ng-container>
+        </m-button>
+      </div>
+    </div>
+    <p>
+      In the early 20th century, coal miners would send canaries into the mines
+      to signal early warnings for obstacles ahead. By turning on Canary mode,
+      you can help test our newest features so we can work out any issues before
+      rolling them out to everyone.
+    </p>
+    <m-button color="blue">
+      <a
+        class="m-canary__groupLink"
+        routerLink="/groups/profile/1003662081932754944/feed"
+      >
+        See the Canaries group
+      </a>
+    </m-button>
+  </div>
+</m-marketing>

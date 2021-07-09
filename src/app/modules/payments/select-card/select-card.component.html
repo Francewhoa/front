@@ -1,0 +1,15 @@
+<div class="m-selector">
+  <select
+    [ngModel]="paymentMethodId"
+    (ngModelChange)="paymentMethodId = $event; selected.next(paymentMethodId)"
+  >
+    <option value="" *ngIf="paymentMethods.length === 0 && !inProgress"
+      >No Cards</option
+    >
+    <option *ngFor="let card of paymentMethods" [value]="card.id">
+      {{ card.card_brand | titlecase }} ***{{ card.card_last4 }} -
+      {{ card.card_expires }}
+    </option>
+    <option value="new">Add a new card</option>
+  </select>
+</div>

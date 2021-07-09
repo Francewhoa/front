@@ -1,0 +1,95 @@
+<div
+  class="m-translate__hasNav2020"
+  [ngClass]="{'m-translate__visible' : (translation.translated  || translationInProgress)}"
+>
+  <hr *ngIf="(translation.translated  || translationInProgress)" />
+
+  <!-- TRANSLATED MESSAGE  ----------------------- -->
+  <div *ngIf="translation.translated" class="m-translation-wrapper">
+    <div class="message" *ngIf="translation.message">
+      <span [innerHtml]="translation.message | tags"></span>
+    </div>
+
+    <div class="message" *ngIf="translation.description">
+      <span [innerHtml]="translation.description | tags"></span>
+    </div>
+
+    <div class="message" *ngIf="translation.body">
+      <span [innerHtml]="translation.body | tags"></span>
+    </div>
+    <!-- TRANSLATED FROM + OPTIONS ----------------------- -->
+    <div
+      class="m-translation-label m-translate__translatedFrom"
+      *ngIf="!translationInProgress && !open"
+    >
+      <div class="m-translationLabel__content">
+        <ng-container i18n="@@TRANSLATE__TRANSLATED_LABEL"
+          >Translated</ng-container
+        ><span *ngIf="translation.source" i18n="Translation source">
+          from {{ translation.source }}</span
+        ><span> - </span>
+        <a
+          (click)="changeDefaultLanguage()"
+          i18n="@@TRANSLATE__CHANGE_LANGUAGE_ACTION"
+          >change language</a
+        >
+      </div>
+    </div>
+  </div>
+  <!-- TRANSLATION IN PROGRESS ----------------------- -->
+  <div
+    class="m-translation-label m-translate__translating"
+    *ngIf="translationInProgress"
+  >
+    <div class="m-translationLabel__content">
+      <m-loadingEllipsis></m-loadingEllipsis>
+    </div>
+  </div>
+  <ng-container [ngTemplateOutlet]="selectLanguage"></ng-container>
+</div>
+
+<!-- SELECT LANGUAGE ----------------------- -->
+<ng-template #selectLanguage>
+  <div *ngIf="open" class="m-translation-label m-translate__selectWrapper">
+    <div class="m-translationLabel__content">
+      <span i18n="@@TRANSLATE__TO_LABEL" class="m-translate__selectLabel"
+        >Translate to</span
+      >
+      <div class="m-translate-select">
+        <select
+          class="m-translate-select-control"
+          (change)="select($event.target.value)"
+          [disabled]="languagesInProgress"
+        >
+          <option value="" selected i18n="@@TRANSLATE__LANGUAGE_PLACEHOLDER"
+            >Select Language</option
+          >
+
+          <optgroup
+            label="Preferred Languages"
+            i18n-label="@@TRANSLATE__PREFERRED_LANGUAGES_LABEL"
+            *ngIf="preferredLanguages.length > 0"
+          >
+            <option
+              *ngFor="let language of preferredLanguages"
+              [value]="language.language"
+            >
+              {{ language.name }} ({{ language.language }})
+            </option>
+          </optgroup>
+
+          <optgroup
+            label="{{ preferredLanguages.length > 0 ? 'Other' : 'All Languages' }}"
+          >
+            <option
+              *ngFor="let language of languages"
+              [value]="language.language"
+            >
+              {{ language.name }} ({{ language.language }})
+            </option>
+          </optgroup>
+        </select>
+      </div>
+    </div>
+  </div>
+</ng-template>

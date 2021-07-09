@@ -1,0 +1,29 @@
+<div class="m-tabs__container">
+  <div class="m-tabs__tab">
+    <a
+      routerLink="../preferred"
+      routerLinkActive="m-tabs__tab--selected"
+      i18n="@@DISCOVERY_FEEDS__YOUR_FEED"
+      >Your Feed</a
+    >
+  </div>
+  <div class="m-tabs__tab">
+    <a
+      routerLink="../trending"
+      routerLinkActive="m-tabs__tab--selected"
+      i18n="@@DISCOVERY_FEEDS__TRENDING_FEED"
+      >Trending Feed</a
+    >
+  </div>
+  <div class="m-layout__spacer"></div>
+  <m-discovery__settingsButton modalType="feed"></m-discovery__settingsButton>
+</div>
+
+<div class="m-goBack">
+  <a [routerLink]="parentPath" [queryParams]="{ reload: false }">
+    <i class="material-icons">arrow_back</i
+    ><span i18n="@@DISCOVERY_FEEDS__BACK">Back</span>
+  </a>
+</div>
+
+<m-discovery__feedsList></m-discovery__feedsList>

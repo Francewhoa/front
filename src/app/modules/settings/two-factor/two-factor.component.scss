@@ -1,0 +1,11 @@
+m-settings--two-factor {
+  .mdl-card__supporting-text {
+    overflow: visible;
+  }
+}
+
+.m-twoFactor__codeInputLabel {
+  padding: 8px 20px;
+  width: unset;
+  max-width: 100%;
+}

@@ -1,0 +1,74 @@
+<form novalidate [formGroup]="form">
+  <div *ngFor="let field of fieldDefinitions">
+    <div [ngSwitch]="field.type">
+      <div *ngSwitchCase="'text'">
+        <div>
+          <div class="m-dynamicForm__row">
+            <label class="m-dynamicForm__label" *ngIf="field.label"
+              >{{ field.label }}:</label
+            >
+            <input
+              [id]="field.key"
+              [formControlName]="field.key"
+              class="m-dynamicForm__input m-input"
+              type="text"
+            />
+          </div>
+        </div>
+      </div>
+
+      <div *ngSwitchCase="'textarea'">
+        <div>
+          <div class="m-dynamicForm__row">
+            <label class="m-dynamicForm__label" *ngIf="field.label"
+              >{{ field.label }}:</label
+            >
+            <textarea
+              [id]="field.key"
+              [formControlName]="field.key"
+              class="m-dynamicForm__textarea m-input"
+              type="text"
+            ></textarea>
+          </div>
+        </div>
+      </div>
+
+      <div *ngSwitchCase="'date'">
+        <div>
+          <m-date-selector
+            [date]="form.get(field.key).value"
+            (dateChange)="form.get(field.key).setValue($event)"
+            [calendarType]="'both'"
+            [tooltipIcon]="'keyboard_arrow_down'"
+            label="{{ field.label }}"
+            dateFormat="short"
+          ></m-date-selector>
+        </div>
+      </div>
+
+      <div *ngSwitchCase="'select'">
+        <div class="mdl-textfield">
+          <span class="select-label">{{ field.label }}:</span>
+          <select [formControlName]="field.key">
+            <option *ngFor="let option of field.options" [value]="option.value">
+              {{ option.label }}
+            </option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="mdl-color-text--red-500"
+      *ngIf="
+        form.get(field.key).invalid &&
+        (form.get(field.key).dirty || form.get(field.key).touched)
+      "
+    >
+      <div *ngIf="form.get(field.key).errors.required">
+        {{ field.label }} is required.
+        {{ form.get(field.key).validator | json }}
+      </div>
+    </div>
+  </div>
+</form>

@@ -1,0 +1,23 @@
+m-captcha {
+  display: block;
+  img {
+    margin-bottom: $minds-margin;
+  }
+  .m-input {
+    @include m-theme() {
+      background-color: themed($m-bgColor--primary) !important;
+    }
+    &::placeholder {
+      font-weight: 400 !important;
+      font-size: 14px !important;
+      @include m-theme() {
+        color: themed($m-textColor--secondary);
+      }
+    }
+  }
+}
+
+.m-captcha__refresh {
+  cursor: pointer;
+  position: absolute;
+}

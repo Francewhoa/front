@@ -1,0 +1,47 @@
+.m-channel--badges {
+  list-style: none;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding: 0;
+  margin: 0;
+
+  li {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    padding: 0 4px;
+  }
+
+  i {
+    font-size: 24px;
+
+    @include m-theme() {
+      color: themed($m-textColor--primary);
+    }
+
+    &.admin__badge {
+      @include m-theme() {
+        color: themed($m-green);
+      }
+    }
+  }
+
+  .admin__badge + .m-tooltip--bubble {
+    cursor: default;
+  }
+}
+
+.m-channel--badges-activity {
+  padding: 0;
+  margin: 0;
+  margin-left: 4px;
+  display: inline-flex;
+  vertical-align: middle;
+
+  .m-channel--badges i {
+    font-size: 16px !important;
+    padding: 0px;
+  }
+}

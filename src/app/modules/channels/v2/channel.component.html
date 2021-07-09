@@ -1,0 +1,96 @@
+<ng-container [m-clientMeta]="{ source: 'feed/channel', medium: 'feed' }">
+  <div *ngIf="service.channel$ | async" class="m-channel-v2">
+    <m-channel__header>
+      <m-channel__actions *ngIf="service.guid$ | async"></m-channel__actions>
+    </m-channel__header>
+
+    <m-channel__content>
+      <m-channelAbout__brief
+        class="m-channel__narrowBrief"
+      ></m-channelAbout__brief>
+
+      <div class="m-channel__toolbar">
+        <div
+          *ngIf="service.username$ | async as username"
+          class="m-channel__tabs m-tabs__container"
+        >
+          <div class="m-tabs__tab">
+            <a
+              [class.m-tabs__tab--selected]="isFeedView && layout === 'list'"
+              [routerLink]="['/', username, '']"
+              [queryParams]="{ layout: 'list' }"
+              i18n="@@COMMON__FEED"
+              >Feed</a
+            >
+          </div>
+
+          <div class="m-tabs__tab">
+            <a
+              [routerLink]="['/', username, '']"
+              [queryParams]="{ layout: 'grid' }"
+              [class.m-tabs__tab--selected]="isFeedView && layout === 'grid'"
+              >Gallery</a
+            >
+          </div>
+
+          <div class="m-tabs__tab" *mIfFeature="'paywall-2020'">
+            <a
+              [routerLink]="['/', username, 'shop']"
+              routerLinkActive="m-tabs__tab--selected"
+              [routerLinkActiveOptions]="{
+                __change_detection_hack__: username
+              }"
+              i18n="@@COMMON__SHOP__MEMBERSHIPS"
+              >Memberships</a
+            >
+          </div>
+
+          <div class="m-tabs__tab">
+            <a
+              [routerLink]="['/', username, 'about']"
+              [class.m-tabs__tab--selected]="
+                ['about', 'subscribers', 'subscriptions', 'groups'].includes(
+                  view$ | async
+                )
+              "
+              i18n="@@COMMON__ABOUT"
+              data-cy="data-minds-channel-about-button"
+              >About</a
+            >
+          </div>
+        </div>
+        <div class="m-channel__searchBtnWrapper">
+          <a class="m-channelSearchBtn" (click)="openSearchModal($event)"
+            ><i class="material-icons">search</i></a
+          >
+        </div>
+      </div>
+
+      <ng-container [ngSwitch]="view$ | async">
+        <ng-container *ngSwitchCase="'shop'">
+          <m-channelShop__lazy
+            component="m-channel__shop"
+          ></m-channelShop__lazy>
+        </ng-container>
+        <m-channel__about *ngSwitchCase="'about'"></m-channel__about>
+        <m-channelList__connections
+          subscribeEndpointParam="subscribers"
+          [canSearch]="false"
+          *ngSwitchCase="'subscribers'"
+        ></m-channelList__connections>
+        <m-channelList__connections
+          subscribeEndpointParam="subscriptions"
+          [canSearch]="true"
+          *ngSwitchCase="'subscriptions'"
+        ></m-channelList__connections>
+        <m-channelList__groups *ngSwitchCase="'groups'"></m-channelList__groups>
+
+        <m-channel__feed
+          [view]="view$ | async"
+          [layout]="layout"
+          *ngSwitchDefault
+        ></m-channel__feed>
+      </ng-container>
+    </m-channel__content>
+  </div>
+</ng-container>

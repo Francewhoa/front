@@ -1,0 +1,20 @@
+m-analytics__filters {
+  display: block;
+}
+.m-analytics__filtersContainer {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 16px 16px 16px 0;
+  position: relative;
+  margin-top: 36px;
+  margin: 36px 0 0 40px;
+  @include m-theme() {
+    background-color: themed($m-bgColor--primary);
+  }
+}
+
+@media screen and (max-width: $min-tablet) {
+  .m-analytics__filtersContainer {
+    margin-left: 24px;
+  }
+}

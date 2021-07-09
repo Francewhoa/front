@@ -1,0 +1,54 @@
+<ng-container *ngIf="group">
+  <div class="minds-list">
+    <div>
+      <div
+        class="m-groupReview__item"
+        *ngFor="let entity of entities; let i = index"
+      >
+        <m-activity
+          [entity]="entity"
+          [canDelete]="group['is:owner'] || group['is:moderator']"
+          (deleted)="delete(entity)"
+          [attr.data-minds-activity-guid]="entity.guid"
+        >
+        </m-activity>
+
+        <!-- Review -->
+
+        <div bottom-content class="m-groups-feed--review-actions">
+          <m-button
+            color="blue"
+            (onAction)="approve(entity, i)"
+            i18n="@@COMMON__APPROVE"
+          >
+            Approve
+          </m-button>
+
+          <m-button
+            color="red"
+            (onAction)="reject(entity, i)"
+            i18n="@@COMMON__REJECT"
+          >
+            Reject
+          </m-button>
+        </div>
+
+        <!-- / -->
+      </div>
+
+      <infinite-scroll
+        distance="25%"
+        (load)="load()"
+        [moreData]="moreData"
+        [inProgress]="inProgress"
+      ></infinite-scroll>
+    </div>
+  </div>
+
+  <m-groups__kick-modal
+    *ngIf="kicking"
+    [user]="kicking"
+    [group]="group"
+    (closed)="kick(null)"
+  ></m-groups__kick-modal>
+</ng-container>

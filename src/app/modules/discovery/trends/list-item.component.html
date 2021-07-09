@@ -1,0 +1,52 @@
+<a
+  [routerLink]="
+    trend.guid ? parentPath + '/trend/' + trend.guid : parentPath + '/search'
+  "
+  [queryParams]="{
+    q: !trend.guid ? '#' + trend.hashtag : null,
+    f: trend.period <= 24 ? 'top' : 'latest'
+  }"
+>
+  <ng-container *ngIf="trend.title">
+    <div>
+      <h4>
+        {{
+          trend.title.length <= 200
+            ? trend.title
+            : trend.title.substr(0, 200) + '...'
+        }}
+      </h4>
+      <div class="m-discoveryTrendListItem__supportingText--below">
+        <m-paywallBadge
+          [entity]="trend.entity"
+          [topRightPosition]="false"
+        ></m-paywallBadge>
+        <span *ngIf="trend.volume > 0"
+          >{{ trend.volume }} channels discussing</span
+        >
+        <span>{{ trend.entity.time_created | friendlytime }}</span>
+      </div>
+    </div>
+    <img
+      [src]="trend.entity.thumbnail_src"
+      class="m-discoveryTrendListItem__image"
+    />
+  </ng-container>
+  <ng-container *ngIf="!trend.title">
+    <div>
+      <div class="m-discoveryTrendListItem__supportingText--above">
+        <span>
+          <ng-container i18n="@@COMMON__TRENDING">Trending</ng-container>
+          <ng-container *ngIf="trend.period <= 24">
+            {{ trend.period }}h
+          </ng-container>
+        </span>
+        <span>{{ trend.volume }} posts</span>
+      </div>
+      <h4>#{{ trend.hashtag }}</h4>
+    </div>
+    <i class="m-discoveryTrendListItem__chevron material-icons">
+      chevron_right
+    </i>
+  </ng-container>
+</a>

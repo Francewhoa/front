@@ -1,0 +1,45 @@
+m-composer {
+  // new stacking context
+  position: relative;
+  z-index: 0;
+
+  display: block;
+  margin-bottom: 16px;
+  // padding: 29px 0 34px;
+  border-radius: 4px;
+  box-sizing: border-box;
+
+  @include m-theme() {
+    background: themed($m-bgColor--primary);
+    border: 1px solid themed($m-borderColor--primary);
+  }
+
+  @media screen and (max-width: $max-mobile) {
+    border-radius: 0;
+  }
+}
+
+.m-composer__trigger {
+  display: block;
+  position: relative;
+  cursor: pointer;
+
+  .m-composer__triggerPreview {
+    pointer-events: none;
+
+    &.m-composer__triggerPreview--hidden {
+      > * {
+        opacity: 0.15;
+      }
+    }
+  }
+
+  .m-composer__triggerOverlay {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    z-index: 1;
+  }
+}

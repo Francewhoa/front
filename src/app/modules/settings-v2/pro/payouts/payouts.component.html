@@ -1,0 +1,63 @@
+<m-settingsV2__header>
+  <div class="m-settingsV2__headerLabel" i18n="@@SETTINGS__PRO__PAYOUTS__LABEL">
+    Payouts
+  </div>
+  <div class="m-settingsV2__desc" i18n="@@SETTINGS__PRO__PAYOUTS__DESCRIPTION">
+    Select the currency type you wish you be paid out in. Please note payouts
+    only occur after your
+    <a routerLink="/analytics/dashboard/earnings">earnings</a> are equivalent to
+    $100 or greater.
+    <a class="m-form__upgradeLink" routerLink="/pro" *ngIf="!isActive"
+      >Upgrade to Pro</a
+    >
+  </div>
+</m-settingsV2__header>
+
+<form *ngIf="form" [formGroup]="form" class="m-formLayout--buttonRight">
+  <div class="m-form__fieldsContainer">
+    <div class="m-form__field--radio">
+      <div class="m-form__row--label">
+        <label i18n="@@PRO_PAYOUTS__PAYOUT_CURRENCY">Payout Currency</label>
+      </div>
+      <div class="m-form__row--input">
+        <label for="method_usd" class="m-form__customInputWrapper__radio">
+          <ng-container i18n="currency|@@COMMON__USD">USD</ng-container>
+          <input
+            type="radio"
+            value="usd"
+            id="method_usd"
+            name="payout_method"
+            formControlName="payout_method"
+            class="form-control"
+          />
+          <span class="m-form__customInput__radio"></span>
+        </label>
+        <label for="method_tokens" class="m-form__customInputWrapper__radio">
+          <ng-container i18n="currency|@@COMMON__MINDS_TOKENS"
+            >Minds Tokens</ng-container
+          >
+          <input
+            type="radio"
+            value="tokens"
+            name="payout_method"
+            id="method_tokens"
+            formControlName="payout_method"
+            class="form-control"
+          />
+          <span class="m-form__customInput__radio"></span>
+        </label>
+      </div>
+    </div>
+  </div>
+  <div class="m-form__buttonsContainer">
+    <m-button
+      color="blue"
+      [disabled]="!canSubmit()"
+      [saving]="inProgress"
+      (onAction)="submit()"
+      i18n="@@PAYOUT_SETTINGS__SAVE_PAYOUT_CURRENCY"
+    >
+      Save Payout Currency
+    </m-button>
+  </div>
+</form>

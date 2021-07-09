@@ -1,0 +1,68 @@
+<m-body
+  [class.has-markers-sidebar]="hasMarkersSidebar()"
+  [class.has-v3-navbar]="true"
+  [class.is-pro-domain]="isProDomain"
+>
+  <div
+    [class.m-pageLayout__container]="!(pageLayoutService.isFullWidth$ | async)"
+    [class.m-pageLayout__container--fullWidth]="
+      pageLayoutService.isFullWidth$ | async
+    "
+  >
+    <m-sidebar--navigation
+      m-pageLayout__pane="left"
+      *ngIf="!isProDomain"
+    ></m-sidebar--navigation>
+    <div
+      [m-pageLayout__pane]="
+        (pageLayoutService.isFullWidth$ | async) ? null : 'main'
+      "
+    >
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</m-body>
+<ng-container *mIfFeature="'matrix'">
+  <m-chatIcon *ngIf="session.isLoggedIn()" [floating]="true"></m-chatIcon>
+</ng-container>
+
+<ng-container *mIfBrowser>
+  <m-messenger
+    *ngIf="
+      session.isLoggedIn() &&
+      !isProDomain &&
+      (messengerService.showLegacyMessenger$ | async)
+    "
+  ></m-messenger>
+</ng-container>
+
+<m-hovercard-popup></m-hovercard-popup>
+
+<m-overlay-modal></m-overlay-modal>
+<m-stackableModal></m-stackableModal>
+
+<m--blockchain--transaction-overlay></m--blockchain--transaction-overlay>
+
+<m-modal--tos-updated *ngIf="session.isLoggedIn()"></m-modal--tos-updated>
+
+<ng-container *mIfBrowser>
+  <m-juryDutySession__summons
+    *ngIf="session.isLoggedIn() && !isProDomain"
+  ></m-juryDutySession__summons>
+</ng-container>
+
+<m-web3-modal
+  title="Connect Wallet"
+  description="To earn tokens and access the decentralized web, select an option below"
+  descriptionGray="(It's easier than you think)"
+  dismissText="No thanks, I'll do it later"
+  promptMetamaskIfNotInstalled="true"
+></m-web3-modal>
+
+<m-modal-signup
+  *ngIf="!isProDomain && !session.getLoggedInUser()"
+  [open]="false"
+></m-modal-signup>
+
+<m-channel--onboarding *ngIf="showOnboarding"></m-channel--onboarding>
+<m-formToast></m-formToast>

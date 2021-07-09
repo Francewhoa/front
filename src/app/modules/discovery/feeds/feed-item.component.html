@@ -1,0 +1,51 @@
+<div
+  class="m-discovery__feedItem"
+  [class.m-discovery__feedItem--user]="entity.type === 'user'"
+  [class.m-discovery__feedItem--group]="entity.type === 'group'"
+>
+  <ng-container [ngSwitch]="entity.type">
+    <ng-template ngSwitchCase="user">
+      <m-publisherCard [publisher]="entity"></m-publisherCard>
+    </ng-template>
+    <ng-template ngSwitchCase="group">
+      <a [routerLink]="['/groups/profile/', entity.guid]">
+        <div
+          class="m-discoveryFeedItem__avatar"
+          [style.background-image]="
+            'url(' +
+            cdnUrl +
+            'fs/v1/avatars/' +
+            entity.guid +
+            '/' +
+            entity.icontime +
+            ')'
+          "
+        ></div>
+        <div class="m-discoveryFeedItem__body">
+          <h4>{{ entity.name }}</h4>
+          <span>{{ entity['members:count'] | number }} members</span>
+          <p *ngIf="entity.briefdescription">
+            {{
+              entity.briefdescription.length > 140
+                ? (entity.briefdescription | slice: 0:140) + '..'
+                : entity.briefdescription
+            }}
+          </p>
+        </div>
+        <div class="m-discoveryFeedItem__actions">
+          <i class="material-icons">chevron_right</i>
+        </div>
+      </a>
+    </ng-template>
+    <ng-template ngSwitchDefault>
+      <m-activity
+        [entity]="entity"
+        [displayOptions]="{
+          showOnlyCommentsInput: !openComments,
+          isFeed: true
+        }"
+        (deleted)="onDelete($event)"
+      ></m-activity>
+    </ng-template>
+  </ng-container>
+</div>

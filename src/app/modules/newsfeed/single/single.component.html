@@ -1,0 +1,90 @@
+<ng-container [m-clientMeta]="{ source: 'single', medium: 'single' }">
+  <div
+    [class.m-pageLayout__container]="!showLegacyActivity"
+    [class.m-newsfeed__single--legacy]="showLegacyActivity"
+  >
+    <div
+      class="m-error-splash"
+      [class.m-pageLayout__pane--main]="!showLegacyActivity"
+      *ngIf="error && !inProgress"
+    >
+      <img [src]="cdnAssetsUrl + 'assets/logos/logo.svg'" />
+      <h3 class="mdl-color-text--red-300">{{ error }}</h3>
+      <span
+        class="mdl-color-text--blue-grey-300"
+        i18n="@@M__COMMON__PLEASE_TRY_AGAIN"
+        >Please try again later</span
+      >
+    </div>
+
+    <div
+      [class.m-pageLayout__pane--main]="!showLegacyActivity"
+      style="padding-bottom: 37px;"
+    >
+      <m-loadingSpinner [inProgress]="inProgress"></m-loadingSpinner>
+
+      <div class="m--spam-notice mdl-shadow--2dp" *ngIf="activity?.spam">
+        <ng-container i18n="@@MINDS__NEWSFEED__SINGLE__FLAGGED_AS_SPAM"
+          >This activity is flagged as spam.</ng-container
+        >
+        <ng-container
+          *ngIf="!session.isAdmin()"
+          i18n="@@MINDS__NEWSFEED__SINGLE__APPEAL_FLAG_NOTE"
+        >
+          If you wish to appeal, please contact us at info@minds.com.
+        </ng-container>
+      </div>
+
+      <div class="minds-list" *ngIf="activity && !error">
+        <m-activity
+          [entity]="activity"
+          [displayOptions]="{
+            fixedHeight: fixedHeight,
+            showOnlyCommentsInput: false,
+            showComments: !fixedHeight,
+            showInteractions: true,
+            autoplayVideo: false
+          }"
+          [slot]="1"
+          (deleted)="delete($event)"
+        ></m-activity>
+      </div>
+      <div class="m-newsfeedSingle__mobileSuggestions">
+        <ng-container *ngTemplateOutlet="suggestions"></ng-container>
+      </div>
+    </div>
+
+    <div
+      class="m-newsfeedSingle__sidebar m-discovery__sidebar"
+      m-pageLayout__pane="right"
+    >
+      <div class="m-pageLayoutPane__inner">
+        <div class="m-pageLayoutPane__sticky" m-stickySidebar>
+          <ng-container *ngTemplateOutlet="suggestions"></ng-container>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <m-social-icons
+    [url]="siteUrl + 'newsfeed/' + activity?.guid"
+    [title]="activity?.title || ''"
+    [embed]="activity"
+    *ngIf="!session.getLoggedInUser().hide_share_buttons"
+  >
+  </m-social-icons>
+</ng-container>
+
+<ng-template #suggestions>
+  <!-- - MORE POSTS FROM OWNER --------------------- -->
+  <m-newsfeed__activitySuggestions
+    [baseEntity]="activity"
+  ></m-newsfeed__activitySuggestions>
+  <!-- - RELATED TAGS --------------------------- -->
+  <!-- <pre>{{ activity | json }}</pre> -->
+  <m-discovery__sidebarTags
+    *ngIf="activity"
+    context="activity"
+    [entityGuid]="activity.guid"
+  ></m-discovery__sidebarTags>
+</ng-template>

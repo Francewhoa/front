@@ -1,0 +1,68 @@
+<m-settingsV2__header>
+  <div
+    class="m-settingsV2__headerLabel"
+    i18n="@@SETTINGS__OTHER__CONTENTADMIN__BLOCKED__LABEL"
+  >
+    Blocked Channels
+  </div>
+  <div
+    class="m-settingsV2__desc"
+    i18n="@@SETTINGS__OTHER__CONTENTADMIN__BLOCKED__DESCRIPTION"
+  >
+    Block channels from appearing in your feed.
+  </div>
+</m-settingsV2__header>
+
+<ng-container *ngIf="hasList">
+  <div *ngFor="let channel of channels" class="m-settingsV2BlockedChannel">
+    <a
+      class="m-settingsV2BlockedChannel__detailsWrapper"
+      [routerLink]="['/', channel.username]"
+    >
+      <div class="m-settingsV2BlockedChannel__avatar">
+        <img [src]="getChannelIcon(channel)" />
+      </div>
+
+      <span class="m-settingsV2BlockedChannel__username">
+        @{{ channel.username }}
+      </span>
+    </a>
+
+    <div class="m-settingsV2BlockedChannel__actions">
+      <!-- *ngIf="!channel._unblocked; else blockButtonTemplate" -->
+      <m-button
+        [disabled]="channel._saving"
+        [saving]="channel._saving"
+        color="grey"
+        (onAction)="unblock(channel)"
+      >
+        <i class="material-icons">person_add</i
+        ><span i18n="@@COMMON__UNBLOCK">Unblock</span>
+      </m-button>
+      <!-- <ng-template #blockButtonTemplate>
+      <m-button
+        [disabled]="channel._saving"
+        [saving]="channel._saving"
+        color="red"
+        (onAction)="block(channel)"
+      >
+        <i class="material-icons">block</i><span i18n="@@COMMON__BLOCK">Block</span>
+      </m-button>
+    </ng-template> -->
+    </div>
+  </div>
+
+  <infinite-scroll
+    *ngIf="moreData"
+    distance="25%"
+    (load)="loadMore()"
+    [moreData]="moreData"
+    [inProgress]="inProgress"
+  >
+  </infinite-scroll>
+</ng-container>
+<div *ngIf="!hasList" class="m-settingsV2__desc m-settingsV2__notice">
+  <span i18n="@@BLOCKED_CHANNELS__YOU_HAVENT_BLOCKED_ANY_CHANNELS"
+    >You haven't blocked any channels.</span
+  >
+</div>

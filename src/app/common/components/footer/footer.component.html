@@ -1,0 +1,25 @@
+<div class="mdl-grid mdl-grid--no-spacing">
+  <section class="mdl-cell mdl-cell--12-col m-footer">
+    <ul class="m-footer-nav m-footer-nav-inline">
+      <li
+        *ngFor="let page of navigation.getItems('footer')"
+        class="m-footer-nav-item"
+      >
+        <a
+          *ngIf="pagesService.isInternalLink(page.path)"
+          [routerLink]="['/' + page.path]"
+          >{{ page.title }}</a
+        >
+        <a
+          *ngIf="!pagesService.isInternalLink(page.path)"
+          [href]="page.path"
+          target="_blank"
+          >{{ page.title }}</a
+        >
+      </li>
+    </ul>
+    <span class="copyright" i18n="@@M__COMMON__COPYRIGHT_YEAR"
+      >&#169; Minds {{ '2021' }}</span
+    >
+  </section>
+</div>

@@ -1,0 +1,60 @@
+<m-settingsV2__header>
+  <div
+    class="m-settingsV2__headerLabel"
+    i18n="@@SETTINGS__ACCOUNT__EMAIL__LABEL"
+  >
+    Email Address
+  </div>
+  <div
+    class="m-settingsV2__desc"
+    i18n="@@SETTINGS__ACCOUNT__EMAIL__DESCRIPTION"
+  >
+    Change the email address where notifications are sent.
+  </div>
+</m-settingsV2__header>
+
+<form *ngIf="form" [formGroup]="form" class="m-formLayout--buttonRight">
+  <div class="m-form__fieldsContainer">
+    <div class="m-form__field--text stretchedField hasValidationRow">
+      <div class="m-form__row--label">
+        <label for="email" i18n="@@ACCOUNT_EMAIL_ADDRESS__TITLE"
+          >Email Address</label
+        >
+      </div>
+      <div
+        class="m-form__row--input"
+        [ngClass]="{
+          invalid: (form.touched || form.dirty) && email.hasError('email')
+        }"
+      >
+        <input
+          type="text"
+          id="email"
+          name="email"
+          formControlName="email"
+          class="form-control"
+          [readonly]="inProgress || !init"
+        />
+      </div>
+      <div class="m-form__row--validation">
+        <p
+          *ngIf="(form.touched || form.dirty) && email.hasError('email')"
+          i18n="@@ACCOUNT_EMAIL_ADDRESS__INVALID_EMAIL_ADDRESS"
+        >
+          Invalid email address format.
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="m-form__buttonsContainer">
+    <m-button
+      color="blue"
+      [disabled]="!canSubmit()"
+      [saving]="inProgress"
+      (onAction)="save()"
+      i18n="@@ACCOUNT_EMAIL_ADDRESS__SAVE_EMAIL_ADDRESS"
+    >
+      Save Email Address
+    </m-button>
+  </div>
+</form>

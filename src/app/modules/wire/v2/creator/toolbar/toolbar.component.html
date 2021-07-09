@@ -1,0 +1,83 @@
+<ng-template #typeLabel>
+  <ng-container [ngSwitch]="service.type$ | async">
+    <ng-container *ngSwitchCase="'tokens'" i18n="@@WIRE_CREATOR_TOOLBAR__OTHER"
+      >{ service.amount$ | async, plural, =1 {token} other {tokens}
+      }</ng-container
+    >
+    <ng-container *ngSwitchCase="'usd'" i18n="currency|@@COMMON_USD"
+      >USD</ng-container
+    >
+    <ng-container *ngSwitchCase="'eth'" i18n="currency|@@COMMON_ETHER"
+      >Ether</ng-container
+    >
+    <ng-container *ngSwitchCase="'btc'" i18n="currency|@@COMMON_BITCOIN"
+      >Bitcoin</ng-container
+    >
+  </ng-container>
+</ng-template>
+
+<div class="m-wireCreator__toolbar m-modalV2__toolbar">
+  <m-poweredBy product="Pay" link="/pay"></m-poweredBy>
+
+  <div class="m-wireCreatorToolbar__message">
+    <div
+      *ngIf="(service.validation$ | async)?.isErrorVisible"
+      class="m-wireCreatorToolbarMessage__error"
+    >
+      {{ (service.validation$ | async)?.error }}
+    </div>
+  </div>
+
+  <m-button
+    class="m-wireCreatorToolbar__send"
+    [disabled]="disabled | async"
+    [saving]="service.inProgress$ | async"
+    (onAction)="onSubmitClick($event)"
+    data-cy="wire-v2-send"
+    color="blue"
+  >
+    <ng-container
+      *ngIf="!(service.isUpgrade$ | async) && !(service.supportTier$ | async)"
+    >
+      <ng-container
+        *ngIf="service.recurring$ | async; else noRecurringLabel"
+        i18n="@@WIRE_CREATOR_TOOLBAR__SEND"
+      >
+        Send {{ service.amount$ | async | number: '1.0-6' }}
+        <ng-container *ngTemplateOutlet="typeLabel"></ng-container> monthly
+      </ng-container>
+      <ng-template #noRecurringLabel>
+        <ng-container i18n="@@WIRE_CREATOR_TOOLBAR__SEND">
+          Send {{ service.amount$ | async | number: '1.0-6' }}
+          <ng-container *ngTemplateOutlet="typeLabel"></ng-container>
+        </ng-container>
+      </ng-template>
+    </ng-container>
+    <ng-container
+      *ngIf="service.isUpgrade$ | async"
+      i18n="@@WIRE_CREATOR_TOOLBAR__SUBMIT_UPGRADE"
+    >
+      <ng-container
+        *ngIf="!(service.upgradeCanHaveTrial$ | async); else startTrialTxt"
+      >
+        Upgrade to Minds<ng-container
+          *ngIf="(service.upgradeType$ | async) === 'plus'"
+          >+</ng-container
+        >
+        <ng-container *ngIf="(service.upgradeType$ | async) === 'pro'">
+          Pro</ng-container
+        >
+      </ng-container>
+      <ng-template #startTrialTxt>
+        Start free trial
+      </ng-template>
+    </ng-container>
+
+    <ng-container
+      *ngIf="service.supportTier$ | async"
+      i18n="@@WIRE_CREATOR_TOOLBAR__SUBMIT_SUPPORT_TIER"
+    >
+      Join Membership
+    </ng-container>
+  </m-button>
+</div>

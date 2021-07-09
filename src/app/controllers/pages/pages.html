@@ -1,0 +1,31 @@
+<header *ngIf="header">
+  <minds-banner [src]="'fs/v1/pages/' + path" [top]="headerTop"></minds-banner>
+</header>
+
+<div class="mdl-grid m-pages" style="max-width:900px">
+  <div class="mdl-cell mdl-cell--4-col">
+    <ul class="m-content-sidebar-nav">
+      <li *ngFor="let page of pages" class="m-content-sidebar-nav-item">
+        <a
+          *ngIf="pagesService.isInternalLink(page.path)"
+          [routerLink]="['/' + page.path]"
+          [ngClass]="{'is-active': path == page.path }"
+        >
+          {{page.title}}
+        </a>
+        <a
+          *ngIf="!pagesService.isInternalLink(page.path)"
+          [href]="page.path"
+          target="_blank"
+        >
+          {{page.title}}
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <div class="mdl-cell mdl-cell--8-col">
+    <h1>{{title}}</h1>
+    <div #body></div>
+  </div>
+</div>

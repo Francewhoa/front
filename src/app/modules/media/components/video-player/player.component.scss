@@ -1,0 +1,75 @@
+@import 'defaults.scss';
+
+.plyr {
+  display: block;
+}
+
+.plyr video {
+  height: 100%;
+}
+.plyr--video.plyr--stopped {
+  .plyr__controls {
+    display: none;
+  }
+  .plyr__control {
+    display: none;
+  }
+}
+
+[class*='m-videoPlayer__notice'] {
+  display: block;
+  height: auto;
+  line-height: normal;
+  padding: 16px;
+  position: absolute;
+  z-index: 1;
+  width: 100%;
+  box-sizing: border-box;
+  // We don't use theme here because this component is used in
+  // Embed mode and theming is not available there
+  background: linear-gradient(rgba(#000, 0.5), rgba(#000, 0));
+  color: #fff;
+}
+
+m-videoPlayer,
+m-videoPlayer--scrollaware {
+  display: block;
+  position: relative;
+  width: 100%;
+}
+
+.m-videoPlayer__placeholder {
+  height: 330px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-color: #222;
+  position: relative;
+
+  i {
+    opacity: 0.8;
+    display: block;
+    text-align: center;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 100px;
+    position: absolute;
+    cursor: pointer;
+    width: 100%;
+    transition: opacity 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+    @include m-theme() {
+      color: themed($m-white-always);
+      text-shadow: 0 0 3px rgba(themed($m-black-always), 0.6);
+    }
+  }
+
+  &:hover {
+    i {
+      opacity: 1;
+    }
+  }
+}
+
+.m-videoPlayer__placeholder--embedded {
+  height: 100%;
+}

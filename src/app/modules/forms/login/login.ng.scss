@@ -1,0 +1,115 @@
+@import 'defaults.scss';
+
+:host {
+  .m-login__title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-right: 16px;
+
+    a {
+      @include m-theme() {
+        color: themed($m-blue);
+      }
+    }
+
+    @media screen and(max-width: 680px) {
+      flex-direction: column;
+      align-items: flex-start;
+      margin-right: 0;
+      margin-bottom: 24px;
+
+      h3 {
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  .m-login__error,
+  .m-login__formError {
+    font-size: 14px;
+    line-height: 19px;
+    margin-top: 3px;
+
+    @include m-theme() {
+      color: themed($m-red) !important;
+    }
+  }
+
+  .m-login__error {
+    text-align: right;
+  }
+
+  .m-login__spacer {
+    flex-grow: 1;
+  }
+  a {
+    font-weight: 400;
+  }
+
+  .m-login-2fa {
+    padding: 0;
+
+    .m-login-2fa__title {
+      @include m-theme() {
+        color: themed($m-textColor--primary);
+      }
+      font-weight: bold;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+      font-size: 18pt;
+      margin: 8px 0 16px 0;
+    }
+
+    .m-login-2fa__subtitle {
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+
+      @include m-theme() {
+        color: themed($m-textColor--tertiary);
+      }
+    }
+
+    .m-login-mfa-input {
+      padding: 20px 0;
+
+      input {
+        width: 100%;
+        height: 40px;
+        border-radius: 4px;
+        padding: 16px;
+        outline: none !important;
+
+        @include m-theme() {
+          border: 1px solid themed($m-borderColor--primary);
+        }
+
+        &:focus {
+          @include m-theme() {
+            border: 1px solid themed($m-blue);
+          }
+        }
+      }
+    }
+  }
+}
+
+// .m-login-box {
+//   margin-top: $minds-margin * 2;
+//   width: 100% !important;
+
+//   &:last-child {
+//     margin-bottom: 0;
+//   }
+
+//   h3 {
+//     margin: 0;
+//     font-size: 24px;
+//     line-height: 26px;
+//   }
+
+//   .m-reset-password-link {
+//     padding-left: $minds-padding * 2;
+//     text-decoration: none;
+//   }
+// }

@@ -1,0 +1,41 @@
+<div class="mdl-grid m-admin--verify" style="max-width:600px">
+  <div
+    *ngFor="let request of requests; let i = index"
+    class="mdl-cell mdl-cell--12-col"
+  >
+    <div class="mdl-card mdl-shadow--4dp m-admin--verify-requests">
+      <m-publisherCard
+        [publisher]="request.user"
+        [showSubscribeButton]="false"
+      ></m-publisherCard>
+
+      <div class="m-admin--verify-requests-info">
+        <p class="m-message">
+          {{ request.description }}
+        </p>
+        <ul>
+          <li>{{ request.link1 }}</li>
+          <li>{{ request.link2 }}</li>
+        </ul>
+      </div>
+
+      <div class="m-admin--verify-requests-cta">
+        <m-button color="blue" (onAction)="verify(i)" [saving]="inProgress">
+          Verify
+        </m-button>
+
+        <m-button (onAction)="reject(i)" color="red" [saving]="inProgress">
+          Reject
+        </m-button>
+      </div>
+    </div>
+  </div>
+
+  <infinite-scroll
+    distance="25%"
+    (load)="load()"
+    [moreData]="moreData"
+    [inProgress]="inProgress"
+  >
+  </infinite-scroll>
+</div>

@@ -1,0 +1,31 @@
+<div
+  *ngIf="supportTiers.list$ | async as supportTiers"
+  class="m-channelShop__brief"
+  [hidden]="supportTiers.length === 0"
+>
+  <div class="m-channelShopBrief__title">
+    <a
+      class="m-channelShopBriefTitle__text"
+      i18n="CHANNEL_V2__BRIEF_WIRE_REWARD__SHOP__MEMBERSHIPS"
+      [routerLink]="['/', service.username$ | async, 'shop']"
+      >Membership Tiers</a
+    >
+    <!-- <a
+      class="m-channelShopBriefTitle__seeAll"
+      [routerLink]="['/', service.username$ | async, 'shop']"
+      i18n="@@COMMON__CHANNEL__BRIEF__SEE_ALL"
+      >See All</a
+    > -->
+  </div>
+
+  <ng-container *ngIf="service.channel$ | async as channel">
+    <m-channelShopMemberships__supportTier
+      *ngFor="let supportTier of supportTiers"
+      class="m-channelShopMemberships__supportTier m-carousel__item"
+      [supportTier]="supportTier"
+      [isOwner]="channelService.isOwner$ | async"
+      [displayCurrency]="false"
+      (onSelectIntent)="onEntryClick(channel, $event)"
+    ></m-channelShopMemberships__supportTier>
+  </ng-container>
+</div>

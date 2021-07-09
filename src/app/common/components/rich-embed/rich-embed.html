@@ -1,0 +1,114 @@
+<!-- ----------------------------------- -->
+<!-- TYPE: SRC -->
+<!-- ----------------------------------- -->
+<div
+  class="m-rich-embed-src"
+  *ngIf="src && type == 'src'"
+  [ngClass]="{ 'm-has-inline-embed' : hasInlineContentLoaded(), 'm-richEmbedPreview--noThumbnail' : !src.thumbnail_src }"
+>
+  <!-- ----------------------------------- -->
+  <!-- MEDIA -->
+  <!-- ----------------------------------- -->
+  <a
+    [href]="src.perma_url"
+    class="thumbnail"
+    [ngClass]="{ 'm-inline-embed': hasInlineContentLoaded() }"
+    (click)="action($event)"
+    target="_blank"
+    rel="noopener nofollow ugc"
+    *ngIf="src.thumbnail_src || inlineEmbed"
+  >
+    <!-- ----------------------------------- -->
+    <!-- LOADING ANIMATION -->
+    <!-- ----------------------------------- -->
+    <ng-container *ngIf="!_isModal">
+      <div
+        class="mdl-progress mdl-js-progress mdl-progress__indeterminate m-html-loading"
+        *ngIf="embeddedInline && (!inlineEmbed || !inlineEmbed.html)"
+        [mdl]
+      ></div>
+    </ng-container>
+    <!-- ---- -->
+    <img
+      *ngIf="!cropImage && (src.thumbnail_src || !inlineEmbed)"
+      [hidden]="hasInlineContentLoaded()"
+      [src]="src.thumbnail_src"
+      (error)="src.thumbnail_src = null"
+    />
+    <!-- ---- -->
+    <div
+      class="m-rich-embed-thumbnail-wrapper"
+      *ngIf="cropImage && (src.thumbnail_src || !inlineEmbed)"
+      [hidden]="hasInlineContentLoaded()"
+      [ngStyle]="{ 'background-image': 'url(' + src.thumbnail_src + ')' }"
+    ></div>
+    <!-- ---- -->
+    <div
+      class="m-rich-embed-thumbnail-wrapper m-rich-embed-thumbnail-placeholder"
+      *ngIf="!src.thumbnail_src"
+      [hidden]="hasInlineContentLoaded()"
+    ></div>
+    <!-- ---- -->
+    <div
+      *ngIf="!embeddedInline && inlineEmbed"
+      class="m-rich-embed-action-overlay"
+    >
+      <i *ngIf="inlineEmbed.playable" class="material-icons">play_arrow</i>
+      <i *ngIf="inlineEmbed.viewable" class="material-icons">remove_red_eye</i>
+      <i *ngIf="inlineEmbed.downloadable" class="material-icons"
+        >file_download</i
+      >
+    </div>
+    <!-- ---- -->
+
+    <div *ngIf="hasInlineContentLoaded()" [class]="inlineEmbed.className">
+      <div [outerHTML]="inlineEmbed.html"></div>
+    </div>
+  </a>
+  <!-- ----------------------------------- -->
+  <!-- TITLE/BLURB -->
+  <!-- ----------------------------------- -->
+  <a
+    [href]="src.perma_url"
+    target="_blank"
+    rel="noopener noreferrer"
+    class="meta"
+    [ngClass]="{ 'm-rich-embed-has-thumbnail': src.thumbnail_src, 'm-rich-embed--title--no-padding': hasInlineContentLoaded(), 'm-richEmbed--paywalled' : isPaywalled && mediaSource === 'minds' }"
+  >
+    <h2
+      class="m-rich-embed--title mdl-card__title-text mdl-typography--font-medium"
+      *ngIf="src.title"
+    >
+      {{src.title | excerpt}}
+    </h2>
+    <p class="m-blurb" *ngIf="src.blurb">{{src.blurb | excerpt: '300'}}</p>
+    <p class="m-url">
+      {{src.perma_url | domain}}
+    </p>
+    <div class="m-activityContent__teaserFadeout" *ngIf="isPaywalled"></div>
+  </a>
+</div>
+<!-- ----------------------------------- -->
+<!-- TYPE: PREVIEW -->
+<!-- (Currently used in comments) -->
+<!-- ----------------------------------- -->
+<div
+  class="m-rich-embed-preview"
+  [ngClass]="{'m-richEmbedPreview--noThumbnail' : !preview.thumbnail}"
+  *ngIf="preview && type == 'preview'"
+>
+  <a class="thumbnail" *ngIf="preview.thumbnail">
+    <img *ngIf="!cropImage" src="{{preview.thumbnail}}" />
+    <div
+      class="m-rich-embed-thumbnail-wrapper"
+      *ngIf="cropImage"
+      [ngStyle]="{ 'background-image': 'url(' + preview.thumbnail + ')' }"
+    ></div>
+  </a>
+  <a class="meta" [ngClass]="{ 'm-has-thumbnail': preview.thumbnail }">
+    <h2 class="m-rich-embed--title mdl-card__title-text">
+      {{preview.title | excerpt}}
+    </h2>
+    <p>{{preview.url | domain}}</p>
+  </a>
+</div>

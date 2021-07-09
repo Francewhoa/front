@@ -1,0 +1,18 @@
+<ng-container [ngSwitch]="entity.type" *ngIf="entity">
+  <ng-container *ngSwitchCase="'user'">
+    <ng-template dynamic-host></ng-template>
+  </ng-container>
+  <ng-container *ngSwitchCase="'group'">
+    <ng-template dynamic-host></ng-template>
+  </ng-container>
+
+  <ng-container *ngSwitchDefault>
+    <m-activity
+      [entity]="entity"
+      [displayOptions]="displayOptions"
+      (deleted)="delete($event)"
+      [slot]="slot"
+    >
+    </m-activity>
+  </ng-container>
+</ng-container>

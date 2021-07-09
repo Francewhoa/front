@@ -1,0 +1,50 @@
+<m-settingsV2__header>
+  <div
+    class="m-settingsV2__headerLabel"
+    i18n="@@SETTINGS__ACCOUNT__NSFW__LABEL"
+  >
+    NSFW Content
+  </div>
+  <div class="m-settingsV2__desc" i18n="@@SETTINGS__ACCOUNT__NSFW__DESCRIPTION">
+    Control how NSFW content is displayed in your newsfeed.
+  </div>
+</m-settingsV2__header>
+
+<form *ngIf="form" [formGroup]="form" class="m-formLayout--buttonRight">
+  <div class="m-form__fieldsContainer">
+    <div class="m-form__field--checkbox stretchedField">
+      <div class="m-form__row--input">
+        <div class="m-form__field--checkbox">
+          <div class="m-form__row--input">
+            <label for="mature" class="m-form__customInputWrapper__checkbox">
+              <ng-container i18n="@@NSFW_CONTENT_SETTINGS__ALWAYS_SHOW_NSFW"
+                >Always show NSFW content (18+)</ng-container
+              >
+              <input
+                type="checkbox"
+                id="mature"
+                name="mature"
+                formControlName="mature"
+                class="form-control"
+                data-minds="mature"
+                [readonly]="inProgress || !init"
+              />
+              <span class="m-form__customInput__checkbox"></span>
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="m-form__buttonsContainer">
+    <m-button
+      color="blue"
+      [disabled]="!canSubmit()"
+      [saving]="inProgress"
+      (onAction)="submit()"
+      i18n="@@NSFW_CONTENT_SETTINGS__UPDATE_PREFERENCES"
+    >
+      Update NSFW Preference
+    </m-button>
+  </div>
+</form>

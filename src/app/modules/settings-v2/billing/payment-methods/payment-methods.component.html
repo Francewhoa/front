@@ -1,0 +1,83 @@
+<m-settingsV2__header>
+  <div
+    class="m-settingsV2__headerLabel"
+    i18n="@@SETTINGS__BILLING__METHOD__LABEL"
+  >
+    Payment Methods
+  </div>
+  <div
+    class="m-settingsV2__desc"
+    i18n="@@SETTINGS__BILLING__METHOD__DESCRIPTION"
+  >
+    Manage credit cards associated with your Minds account.
+  </div>
+</m-settingsV2__header>
+
+<div *ngIf="!init" style="width:100%; text-align:center;">
+  <div
+    class="mdl-spinner mdl-js-spinner is-active"
+    [mdl]
+    style="margin: 16px auto;"
+  ></div>
+</div>
+<ng-container *ngIf="init">
+  <div class="m-settingsV2__table">
+    <ul>
+      <li class="m-settingsV2__tableHeader" *ngIf="cards.length">
+        <div class="m-settingsV2__tableCol--left">
+          <span i18n="@@SETTINGS_V2_PAYMENT_METHODS__YOUR_CARDS"
+            >Your Cards</span
+          >
+        </div>
+        <div
+          class="m-settingsV2__tableCol--right"
+          i18n="@@SETTINGS_V2_PAYMENT_METHODS__EXPIRES"
+        >
+          <span>Expires</span
+          ><span class="m-settingsV2__tableItem__action"></span>
+        </div>
+      </li>
+      <li
+        *ngFor="let card of cards; let i = index"
+        class="m-settingsV2__tableItem"
+      >
+        <div class="m-settingsV2__tableCol--left">
+          <span class="m-settingsV2__tableItem__type"
+            >{{ card.card_brand | titlecase }} ****{{ card.card_last4 }}</span
+          >
+        </div>
+        <div class="m-settingsV2__tableCol--right">
+          <span
+            class="m-settingsV2__paymentMethods__expiry"
+            [ngClass]="{ expired: cardExpired(card.card_expires) }"
+            >{{ card.card_expires }}</span
+          >
+          <a
+            class="m-settingsV2__tableItem__action"
+            (click)="removeCard(i)"
+            i18n="@@M__ACTION__REMOVE"
+            >Remove <span>card</span></a
+          >
+        </div>
+      </li>
+
+      <li class="m-settingsV2__tableItem m-settingsV2__paymentMethods__add">
+        <a (click)="addNewCard()"
+          ><ng-container
+            *ngIf="!cards.length"
+            i18n="@@SETTINGS_V2_PAYMENT_METHODS__ADD_FIRST_CARD"
+            >Add your first credit card</ng-container
+          >
+          <ng-container
+            *ngIf="cards.length"
+            i18n="@@SETTINGS_V2_PAYMENT_METHODS__ADD_NEW_CARD"
+            ><span>Add a new card</span></ng-container
+          ></a
+        >
+      </li>
+    </ul>
+  </div>
+
+  <m-payments__newCard (completed)="loadSaveCards()" *ngIf="addingNewCard">
+  </m-payments__newCard>
+</ng-container>

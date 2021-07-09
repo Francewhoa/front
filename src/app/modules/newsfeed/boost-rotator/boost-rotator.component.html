@@ -1,0 +1,40 @@
+<ng-container [m-clientMeta]="{ medium: 'boost-rotator' }">
+  <div
+    *ngIf="!disabled"
+    #rotatorEl
+    class="m-newsfeed__boostRotator"
+    [style.min-height]="height"
+    [hidden]="!boosts.length"
+  >
+    <div
+      *ngIf="boosts.length > 0"
+      class="m-carousel__overflowScrollButton--left"
+      (click)="prev()"
+    >
+      <i class="material-icons">chevron_left</i>
+    </div>
+    <ng-container *ngFor="let entity of boosts; let i = index">
+      <m-activity
+        @fastFade
+        [entity]="entity"
+        [displayOptions]="{
+          showOnlyCommentsInput: false,
+          showComments: false,
+          fixedHeight: true,
+          fixedHeightContainer: true
+        }"
+        [attr.data-minds-activity-guid]="entity.guid"
+        [slot]="i + 1"
+        [canRecordAnalytics]="false"
+        *ngIf="i === currentPosition"
+      ></m-activity>
+    </ng-container>
+    <div
+      *ngIf="boosts.length > 0"
+      class="m-carousel__overflowScrollButton--right"
+      (click)="next()"
+    >
+      <i class="material-icons">chevron_right</i>
+    </div>
+  </div>
+</ng-container>

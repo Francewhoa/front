@@ -1,0 +1,50 @@
+m-tooltip {
+  display: inline-block;
+  cursor: pointer;
+
+  .m-tooltip--anchored {
+    position: relative;
+  }
+}
+
+.m-tooltip--bubble {
+  @include z-index(tooltip);
+  position: absolute;
+  font-size: 14px;
+  padding: 12px 14px;
+  border-radius: 2px;
+  font-family: 'Roboto', sans-serif;
+  max-width: 220px;
+  line-height: 1.3em;
+  white-space: normal;
+  text-align: left;
+  text-transform: none;
+  @include m-theme() {
+    color: $white;
+    background: $blue;
+  }
+
+  ul {
+    line-height: 1.2em;
+  }
+
+  &.m-tooltip--bubble--anchor-bottom {
+    bottom: 24px;
+  }
+
+  &.m-tooltip--bubble--fixed {
+    position: fixed;
+  }
+
+  &.m-tooltip--bubble--anchor-left {
+    left: 0;
+    right: auto;
+    width: 220px;
+  }
+
+  &.m-tooltip--bubble--anchor-right {
+    left: auto;
+    right: 0;
+    width: 220px;
+  }
+}
